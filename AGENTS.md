@@ -297,7 +297,7 @@ Required pages:
   edit response page
 ```
 
-The timetable grid should support the default 7 × 7 layout.
+The timetable grid should support a selected date range up to 14 days, with 1限 through 7限 plus 夜間.
 
 The grid may scroll horizontally on mobile.
 

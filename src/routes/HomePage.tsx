@@ -3,7 +3,7 @@ export default function HomePage() {
     <section className="page-section">
       <div className="intro">
         <p className="eyebrow">少人数向けの予定調整</p>
-        <h1>7日 × 7時限の表で、参加できるコマを集めます。</h1>
+        <h1>日付範囲を選んで、授業時間と夜間の都合を集めます。</h1>
         <p>
           アカウントなしで予定表を作成し、公開 URL を共有できます。回答は参加者ごとにまとめて保存されます。
         </p>

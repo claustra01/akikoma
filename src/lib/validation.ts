@@ -1,5 +1,8 @@
 import {
   DEFAULT_STATUS_LABELS,
+  addDaysToIsoDate,
+  getInclusiveDateRange,
+  parseIsoDateParts,
   type AnswersMap,
   type PollConfig,
   type ResponseAnswersJson,
@@ -35,6 +38,8 @@ export type PollCreateInput = {
   title: string;
   description: string | null;
   timezone: string;
+  startDate: string;
+  endDate: string;
 };
 
 export type ResponseCreateInput = {
@@ -106,6 +111,54 @@ function isKnownTimezone(value: string): boolean {
   }
 }
 
+function getTodayIsoInTimezone(timezone: string): string {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+
+  const year = parts.find((part) => part.type === "year")?.value;
+  const month = parts.find((part) => part.type === "month")?.value;
+  const day = parts.find((part) => part.type === "day")?.value;
+
+  if (!year || !month || !day) {
+    return "1970-01-01";
+  }
+
+  return `${year}-${month}-${day}`;
+}
+
+function validateDateRange(
+  startDateValue: unknown,
+  endDateValue: unknown,
+  timezone: string
+): ValidationResult<{ startDate: string; endDate: string }> {
+  const today = getTodayIsoInTimezone(timezone);
+  const startDate = startDateValue ?? today;
+  const endDate = endDateValue ?? addDaysToIsoDate(today, 6);
+
+  if (typeof startDate !== "string" || typeof endDate !== "string") {
+    return invalid("開始日と終了日は YYYY-MM-DD 形式で入力してください");
+  }
+
+  if (!parseIsoDateParts(startDate) || !parseIsoDateParts(endDate)) {
+    return invalid("開始日と終了日は YYYY-MM-DD 形式で入力してください");
+  }
+
+  const dates = getInclusiveDateRange(startDate, endDate);
+  if (dates.length === 0) {
+    return invalid("終了日は開始日以降にしてください");
+  }
+
+  if (dates.length > LIMITS.daysMax) {
+    return invalid(`日付範囲は ${LIMITS.daysMax} 日以内にしてください`);
+  }
+
+  return valid({ startDate, endDate });
+}
+
 export function validatePollCreateInput(input: unknown): ValidationResult<PollCreateInput> {
   if (!isRecord(input)) {
     return invalid("リクエスト本文は JSON オブジェクトにしてください");
@@ -131,10 +184,17 @@ export function validatePollCreateInput(input: unknown): ValidationResult<PollCr
     return invalid("timezone が正しくありません");
   }
 
+  const dateRange = validateDateRange(input.startDate, input.endDate, timezone);
+  if (!dateRange.ok) {
+    return dateRange;
+  }
+
   return valid({
     title: title.value,
     description: description.value,
-    timezone
+    timezone,
+    startDate: dateRange.value.startDate,
+    endDate: dateRange.value.endDate
   });
 }
 
@@ -221,7 +281,11 @@ export function validatePollConfig(input: unknown): ValidationResult<PollConfig>
     schemaVersion: 1,
     timezone: input.timezone,
     grid: {
-      days: days.map((day) => ({ id: String(day.id), label: String(day.label) })),
+      days: days.map((day) => ({
+        id: String(day.id),
+        label: String(day.label),
+        ...(typeof day.date === "string" ? { date: day.date } : {})
+      })),
       periods: periods.map((period) => ({ id: String(period.id), label: String(period.label) })),
       slots: slots.map((slot) => ({
         id: String(slot.id),

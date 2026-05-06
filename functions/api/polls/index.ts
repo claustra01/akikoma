@@ -9,7 +9,11 @@ export const onRequestPost = async (context: RequestContext): Promise<Response> 
   handleApi(async () => {
     const body = await readJsonBody(context.request, LIMITS.requestBodyBytes);
     const input = assertValidation(validatePollCreateInput(body));
-    const config = createDefaultPollConfig(input.timezone);
+    const config = createDefaultPollConfig({
+      timezone: input.timezone,
+      startDate: input.startDate,
+      endDate: input.endDate
+    });
     assertValidation(validatePollConfig(config));
 
     const slug = generatePollSlug();

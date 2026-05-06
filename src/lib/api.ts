@@ -78,7 +78,12 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   return body as T;
 }
 
-export function createPoll(input: { title: string; description: string }): Promise<CreatePollPayload> {
+export function createPoll(input: {
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+}): Promise<CreatePollPayload> {
   return requestJson<CreatePollPayload>("/api/polls", {
     method: "POST",
     body: JSON.stringify(input)

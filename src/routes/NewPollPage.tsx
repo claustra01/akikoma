@@ -1,5 +1,13 @@
 import { FormEvent, useState } from "react";
 import { ApiClientError, createPoll, type CreatePollPayload } from "../lib/api";
+import { addDaysToIsoDate } from "../lib/schema";
+
+function localDateInputValue(date = new Date()): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
 function errorMessage(error: unknown): string {
   if (error instanceof ApiClientError) {
@@ -9,8 +17,12 @@ function errorMessage(error: unknown): string {
 }
 
 export default function NewPollPage() {
+  const today = localDateInputValue();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(() => addDaysToIsoDate(today, 6));
+  const maxEndDate = startDate ? addDaysToIsoDate(startDate, 13) : "";
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<CreatePollPayload | null>(null);
@@ -21,7 +33,7 @@ export default function NewPollPage() {
     setError("");
 
     try {
-      const created = await createPoll({ title, description });
+      const created = await createPoll({ title, description, startDate, endDate });
       setResult(created);
     } catch (caught) {
       setError(errorMessage(caught));
@@ -48,6 +60,46 @@ export default function NewPollPage() {
             required
             disabled={busy}
           />
+        </div>
+
+        <div className="form-grid">
+          <div className="form-row">
+            <label htmlFor="poll-start-date">開始日</label>
+            <input
+              id="poll-start-date"
+              type="date"
+              value={startDate}
+              onChange={(event) => {
+                const nextStartDate = event.currentTarget.value;
+                setStartDate(nextStartDate);
+                if (!nextStartDate) {
+                  return;
+                }
+                const nextMaxEndDate = addDaysToIsoDate(nextStartDate, 13);
+                if (endDate < nextStartDate) {
+                  setEndDate(nextStartDate);
+                } else if (endDate > nextMaxEndDate) {
+                  setEndDate(nextMaxEndDate);
+                }
+              }}
+              required
+              disabled={busy}
+            />
+          </div>
+
+          <div className="form-row">
+            <label htmlFor="poll-end-date">終了日</label>
+            <input
+              id="poll-end-date"
+              type="date"
+              value={endDate}
+              min={startDate}
+              max={maxEndDate}
+              onChange={(event) => setEndDate(event.currentTarget.value)}
+              required
+              disabled={busy}
+            />
+          </div>
         </div>
 
         <div className="form-row">

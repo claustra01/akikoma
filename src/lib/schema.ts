@@ -7,6 +7,7 @@ export type StatusLabels = Record<Status, string>;
 export type DayDefinition = {
   id: string;
   label: string;
+  date?: string;
 };
 
 export type PeriodDefinition = {
@@ -64,6 +65,8 @@ export const DEFAULT_STATUS_LABELS: StatusLabels = {
 
 export const UNANSWERED_LABEL = "未回答";
 
+const WEEKDAY_LABELS = ["日", "月", "火", "水", "木", "金", "土"] as const;
+
 export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -72,16 +75,106 @@ export function isValidStatus(value: unknown): value is Status {
   return typeof value === "string" && STATUSES.includes(value as Status);
 }
 
-export function createDefaultPollConfig(timezone = "Asia/Tokyo"): PollConfig {
-  const days: DayDefinition[] = ["月", "火", "水", "木", "金", "土", "日"].map((label, index) => ({
+export type DateRange = {
+  startDate: string;
+  endDate: string;
+};
+
+export function parseIsoDateParts(value: string): { year: number; month: number; day: number } | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) {
+    return null;
+  }
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) {
+    return null;
+  }
+
+  return { year, month, day };
+}
+
+export function addDaysToIsoDate(value: string, days: number): string {
+  const parts = parseIsoDateParts(value);
+  if (!parts) {
+    throw new Error("Invalid ISO date");
+  }
+
+  const date = new Date(Date.UTC(parts.year, parts.month - 1, parts.day + days));
+  return isoDateFromUtcDate(date);
+}
+
+export function isoDateFromUtcDate(date: Date): string {
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function getInclusiveDateRange(startDate: string, endDate: string): string[] {
+  const start = parseIsoDateParts(startDate);
+  const end = parseIsoDateParts(endDate);
+  if (!start || !end) {
+    return [];
+  }
+
+  const startTime = Date.UTC(start.year, start.month - 1, start.day);
+  const endTime = Date.UTC(end.year, end.month - 1, end.day);
+  if (endTime < startTime) {
+    return [];
+  }
+
+  const dates: string[] = [];
+  for (let time = startTime; time <= endTime; time += 24 * 60 * 60 * 1000) {
+    dates.push(isoDateFromUtcDate(new Date(time)));
+  }
+
+  return dates;
+}
+
+export function formatDateLabel(value: string): string {
+  const parts = parseIsoDateParts(value);
+  if (!parts) {
+    return value;
+  }
+
+  const date = new Date(Date.UTC(parts.year, parts.month - 1, parts.day));
+  const weekday = WEEKDAY_LABELS[date.getUTCDay()];
+  return `${parts.month}/${parts.day}(${weekday})`;
+}
+
+export function createDefaultDateRange(today = isoDateFromUtcDate(new Date())): DateRange {
+  return {
+    startDate: today,
+    endDate: addDaysToIsoDate(today, 6)
+  };
+}
+
+export function createDefaultPollConfig(options: {
+  timezone?: string;
+  startDate: string;
+  endDate: string;
+}): PollConfig {
+  const dates = getInclusiveDateRange(options.startDate, options.endDate);
+  const days: DayDefinition[] = dates.map((date, index) => ({
     id: `d${index}`,
-    label
+    label: formatDateLabel(date),
+    date
   }));
 
-  const periods: PeriodDefinition[] = Array.from({ length: 7 }, (_, index) => ({
-    id: `p${index}`,
-    label: `${index + 1}限`
-  }));
+  const periods: PeriodDefinition[] = [
+    ...Array.from({ length: 7 }, (_, index) => ({
+      id: `p${index}`,
+      label: `${index + 1}限`
+    })),
+    {
+      id: "p7",
+      label: "夜間"
+    }
+  ];
 
   const slots: SlotDefinition[] = days.flatMap((day) =>
     periods.map((period) => ({
@@ -94,7 +187,7 @@ export function createDefaultPollConfig(timezone = "Asia/Tokyo"): PollConfig {
 
   return {
     schemaVersion: 1,
-    timezone,
+    timezone: options.timezone ?? "Asia/Tokyo",
     grid: {
       days,
       periods,

@@ -4,10 +4,10 @@
 
 This project is a small schedule coordination web application similar in purpose to Chouseisan.
 
-The application lets a user create a schedule poll, share a public URL, and let participants submit availability for a fixed timetable-style grid such as:
+The application lets a user create a schedule poll, share a public URL, and let participants submit availability for a timetable-style grid such as:
 
-- 7 days
-- 7 periods per day
+- a date range selected when creating the poll
+- 1st through 7th periods plus a night slot
 - yes / maybe / no availability per slot
 
 The application is intended for personal or small-group use. It should be simple, low-cost, and deployable on Cloudflare Pages free-tier-compatible infrastructure.
@@ -50,7 +50,7 @@ This is intentionally not fully normalized.
 
 Rationale:
 
-- A timetable grid of 7 days × 7 periods has only 49 possible cells.
+- A timetable grid of up to 14 days × 8 periods has at most 112 cells.
 - A participant usually submits or edits all answers as a unit.
 - Reading one row per participant is cheaper and simpler than reading one row per participant-slot pair.
 - Slot-level analytics are not a primary requirement.
@@ -344,13 +344,8 @@ Do not use auto-increment IDs in public URLs.
   "timezone": "Asia/Tokyo",
   "grid": {
     "days": [
-      { "id": "d0", "label": "月" },
-      { "id": "d1", "label": "火" },
-      { "id": "d2", "label": "水" },
-      { "id": "d3", "label": "木" },
-      { "id": "d4", "label": "金" },
-      { "id": "d5", "label": "土" },
-      { "id": "d6", "label": "日" }
+      { "id": "d0", "label": "5/7(木)", "date": "2026-05-07" },
+      { "id": "d1", "label": "5/8(金)", "date": "2026-05-08" }
     ],
     "periods": [
       { "id": "p0", "label": "1限" },
@@ -359,7 +354,8 @@ Do not use auto-increment IDs in public URLs.
       { "id": "p3", "label": "4限" },
       { "id": "p4", "label": "5限" },
       { "id": "p5", "label": "6限" },
-      { "id": "p6", "label": "7限" }
+      { "id": "p6", "label": "7限" },
+      { "id": "p7", "label": "夜間" }
     ],
     "slots": [
       { "id": "d0p0", "dayId": "d0", "periodId": "p0", "enabled": true },
@@ -374,10 +370,10 @@ Do not use auto-increment IDs in public URLs.
 }
 ```
 
-For default poll creation, generate all 49 slots:
+For poll creation, generate every slot for the selected date range and the 8 default periods:
 
 ```text
-d0p0 ... d6p6
+d0p0 ... dNp7
 ```
 
 ### 12.2 Response Answers JSON
@@ -426,12 +422,24 @@ timezone:
   optional
   default "Asia/Tokyo"
 
+startDate:
+  optional in API
+  required in UI
+  YYYY-MM-DD
+
+endDate:
+  optional in API
+  required in UI
+  YYYY-MM-DD
+  must be on or after startDate
+
 days:
-  default 7
+  derived from startDate through endDate inclusive
   max 14
 
 periods:
-  default 7
+  default 8
+  labels 1限 through 7限 and 夜間
   max 12
 
 enabled slots:
@@ -443,7 +451,7 @@ config_json:
   each slot must reference existing dayId and periodId
 ```
 
-For the initial UI, only expose the default 7 × 7 grid unless asked otherwise.
+The initial UI exposes date-range selection and the default 8-period grid. It does not yet expose custom period labels or disabled slots.
 
 ### 13.2 Response Creation / Update
 
@@ -822,7 +830,7 @@ The public poll page should show:
 ```text
 - Poll title
 - Description
-- 7 × 7 timetable grid
+- selected-date-range × 8-period timetable grid
 - Summary counts per slot
 - Existing participant responses
 - Form for new response
