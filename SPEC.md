@@ -888,7 +888,7 @@ On mobile, keep the grid readable with stable cell sizes, touch-friendly control
 
 For availability input on mobile, do not require horizontal scrolling. Use a vertical layout grouped by date so a participant can complete the form with vertical scrolling only.
 
-For read-only views such as summary and participant response status, prefer compact mobile-specific layouts that fit the viewport width. Horizontal scrolling may be used on larger screens but should not be the primary mobile interaction.
+For the summary on mobile, preserve a compact table-like view similar to desktop and fit it within the viewport width where possible. Participant response status may use compact cards.
 
 Do not sacrifice data clarity for layout compactness.
 

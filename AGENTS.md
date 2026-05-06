@@ -303,7 +303,7 @@ The desktop-style grid may scroll horizontally on narrow intermediate viewports.
 
 Use one-click controls for availability: each slot should expose ○ / △ / × buttons directly rather than a dropdown.
 
-For availability input on mobile, do not require horizontal scrolling. Use a vertical, date-grouped layout. For read-only summary and response status, prefer compact viewport-width layouts over horizontal table scrolling.
+For availability input on mobile, do not require horizontal scrolling. Use a vertical, date-grouped layout. For mobile summary, preserve a compact table-like view similar to desktop and fit it within the viewport width where possible; response status may use compact cards.
 
 Do not rely on color alone to represent status.
 

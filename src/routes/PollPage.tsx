@@ -8,6 +8,8 @@ type PollPageProps = {
   slug: string;
 };
 
+type ActiveTab = "summary" | "response";
+
 function errorMessage(error: unknown): string {
   if (error instanceof ApiClientError) {
     return error.message;
@@ -22,6 +24,7 @@ export default function PollPage({ slug }: PollPageProps) {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [formKey, setFormKey] = useState(0);
+  const [activeTab, setActiveTab] = useState<ActiveTab>("response");
 
   const loadPoll = useCallback(async () => {
     setLoading(true);
@@ -40,6 +43,12 @@ export default function PollPage({ slug }: PollPageProps) {
     void loadPoll();
   }, [loadPoll]);
 
+  useEffect(() => {
+    if (payload?.poll.isClosed) {
+      setActiveTab("summary");
+    }
+  }, [payload?.poll.isClosed]);
+
   const handleSubmit = async (values: ResponseFormValues) => {
     setSubmitting(true);
     setError("");
@@ -50,6 +59,7 @@ export default function PollPage({ slug }: PollPageProps) {
       setNotice("回答を保存しました。");
       setFormKey((current) => current + 1);
       await loadPoll();
+      setActiveTab("summary");
     } catch (caught) {
       setError(errorMessage(caught));
     } finally {
@@ -93,37 +103,75 @@ export default function PollPage({ slug }: PollPageProps) {
       {notice && <p className="message message-success">{notice}</p>}
       {error && <p className="message message-error">{error}</p>}
 
-      <section className="surface">
-        <div className="section-heading">
-          <h2>集計</h2>
-        </div>
-        <SummaryGrid config={payload.config} summary={payload.summary} />
-      </section>
+      <div className="tabs" role="tablist" aria-label="公開ページの表示切り替え">
+        <button
+          className={`tab-button${activeTab === "summary" ? " is-active" : ""}`}
+          type="button"
+          role="tab"
+          aria-selected={activeTab === "summary"}
+          aria-controls="summary-tab-panel"
+          id="summary-tab"
+          onClick={() => setActiveTab("summary")}
+        >
+          集計・回答一覧
+        </button>
+        <button
+          className={`tab-button${activeTab === "response" ? " is-active" : ""}`}
+          type="button"
+          role="tab"
+          aria-selected={activeTab === "response"}
+          aria-controls="response-tab-panel"
+          id="response-tab"
+          onClick={() => setActiveTab("response")}
+          disabled={payload.poll.isClosed}
+        >
+          回答する
+        </button>
+      </div>
 
-      <section className="surface">
-        <div className="section-heading">
-          <h2>回答する</h2>
-        </div>
-        {payload.poll.isClosed ? (
-          <p className="message message-warning">この予定調整は締め切られています。</p>
-        ) : (
-          <ResponseForm
-            key={formKey}
-            config={payload.config}
-            submitLabel="回答を保存"
-            idPrefix="new-response"
-            busy={submitting}
-            onSubmit={handleSubmit}
-          />
-        )}
-      </section>
+      {activeTab === "summary" && (
+        <section
+          className="surface tab-panel"
+          id="summary-tab-panel"
+          role="tabpanel"
+          aria-labelledby="summary-tab"
+        >
+          <div className="section-heading">
+            <h2>集計</h2>
+          </div>
+          <SummaryGrid config={payload.config} summary={payload.summary} />
 
-      <section className="surface">
-        <div className="section-heading">
-          <h2>回答一覧</h2>
-        </div>
-        <ResponseList slug={slug} config={payload.config} responses={payload.responses} />
-      </section>
+          <div className="section-heading section-heading-nested">
+            <h2>回答一覧</h2>
+          </div>
+          <ResponseList slug={slug} config={payload.config} responses={payload.responses} />
+        </section>
+      )}
+
+      {activeTab === "response" && (
+        <section
+          className="surface tab-panel"
+          id="response-tab-panel"
+          role="tabpanel"
+          aria-labelledby="response-tab"
+        >
+          <div className="section-heading">
+            <h2>回答する</h2>
+          </div>
+          {payload.poll.isClosed ? (
+            <p className="message message-warning">この予定調整は締め切られています。</p>
+          ) : (
+            <ResponseForm
+              key={formKey}
+              config={payload.config}
+              submitLabel="回答を保存"
+              idPrefix="new-response"
+              busy={submitting}
+              onSubmit={handleSubmit}
+            />
+          )}
+        </section>
+      )}
     </section>
   );
 }

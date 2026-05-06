@@ -40,82 +40,57 @@ export default function SummaryGrid({ config, summary }: SummaryGridProps) {
     const cell = getCell(slotId);
     return (
       <>
-        <span>{config.statusLabels.yes} {cell.yes}</span>
-        <span>{config.statusLabels.maybe} {cell.maybe}</span>
-        <span>{config.statusLabels.no} {cell.no}</span>
-        <span>{UNANSWERED_LABEL} {cell.unanswered}</span>
+        <span className="summary-count">{config.statusLabels.yes} {cell.yes}</span>
+        <span className="summary-count">{config.statusLabels.maybe} {cell.maybe}</span>
+        <span className="summary-count">{config.statusLabels.no} {cell.no}</span>
+        <span className="summary-count">
+          <span className="summary-label-full">{UNANSWERED_LABEL}</span>
+          <span className="summary-label-short">未</span> {cell.unanswered}
+        </span>
       </>
     );
   };
 
   return (
-    <>
-      <div className="grid-scroll summary-grid-desktop" role="region" aria-label="集計表" tabIndex={0}>
-        <table className="summary-table">
-          <thead>
-            <tr>
-              <th scope="col">時限</th>
-              {config.grid.days.map((day) => (
-                <th scope="col" key={day.id}>
-                  {day.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {config.grid.periods.map((period) => (
-              <tr key={period.id}>
-                <th scope="row">{period.label}</th>
-                {config.grid.days.map((day) => {
-                  const slot = slotByPosition.get(`${day.id}:${period.id}`);
-                  if (!slot || !slot.enabled) {
-                    return (
-                      <td key={day.id} className="disabled-cell">
-                        対象外
-                      </td>
-                    );
-                  }
-
-                  return (
-                    <td key={day.id} className={getHighlightClassName(slot.id) || undefined}>
-                      <div className="summary-cell" aria-label={`${day.label} ${period.label} の集計`}>
-                        {renderHighlightBadge(slot.id)}
-                        {renderCounts(slot.id)}
-                      </div>
-                    </td>
-                  );
-                })}
-              </tr>
+    <div className="grid-scroll summary-grid" role="region" aria-label="集計表" tabIndex={0}>
+      <table className="summary-table">
+        <thead>
+          <tr>
+            <th scope="col">時限</th>
+            {config.grid.days.map((day) => (
+              <th scope="col" key={day.id}>
+                {day.label}
+              </th>
             ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="summary-mobile-list" aria-label="集計リスト">
-        {config.grid.days.map((day) => (
-          <section className="summary-mobile-day" key={day.id}>
-            <h3>{day.label}</h3>
-            <div className="summary-mobile-slots">
-              {config.grid.periods.map((period) => {
+          </tr>
+        </thead>
+        <tbody>
+          {config.grid.periods.map((period) => (
+            <tr key={period.id}>
+              <th scope="row">{period.label}</th>
+              {config.grid.days.map((day) => {
                 const slot = slotByPosition.get(`${day.id}:${period.id}`);
                 if (!slot || !slot.enabled) {
-                  return null;
+                  return (
+                    <td key={day.id} className="disabled-cell">
+                      対象外
+                    </td>
+                  );
                 }
 
                 return (
-                  <div className={`summary-mobile-slot ${getHighlightClassName(slot.id)}`} key={period.id}>
-                    <div className="summary-mobile-slot-head">
-                      <span className="summary-mobile-period">{period.label}</span>
+                  <td key={day.id} className={getHighlightClassName(slot.id) || undefined}>
+                    <div className="summary-cell" aria-label={`${day.label} ${period.label} の集計`}>
                       {renderHighlightBadge(slot.id)}
+                      {renderCounts(slot.id)}
                     </div>
-                    <div className="summary-mobile-counts">{renderCounts(slot.id)}</div>
-                  </div>
+                  </td>
                 );
               })}
-            </div>
-          </section>
-        ))}
-      </div>
-    </>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
