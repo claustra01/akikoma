@@ -968,7 +968,7 @@ If practical, add API tests later. Initial implementation may focus on build, ty
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "cf:dev": "wrangler pages dev dist --d1 DB=schedule-poll-db",
+    "cf:dev": "wrangler pages dev dist --persist-to .wrangler/state",
     "db:migrate:local": "wrangler d1 migrations apply schedule-poll-db --local",
     "db:migrate:remote": "wrangler d1 migrations apply schedule-poll-db --remote"
   }
