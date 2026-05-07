@@ -25,6 +25,35 @@ export default function ScheduleGrid({ config, answers, onChange, disabled = fal
     onChange(next);
   };
 
+  const updateDayAnswers = (dayId: string, status: "yes" | "no") => {
+    const next = { ...answers };
+    for (const slot of config.grid.slots) {
+      if (slot.dayId === dayId && slot.enabled) {
+        next[slot.id] = status;
+      }
+    }
+
+    onChange(next);
+  };
+
+  const renderDayBulkButtons = (dayLabel: string, dayId: string, view: "desktop" | "mobile") => (
+    <div className="bulk-status-buttons" role="group" aria-label={`${dayLabel} 一括入力`}>
+      {(["yes", "no"] as const).map((status) => (
+        <button
+          key={status}
+          id={`${idPrefix}-${view}-${dayId}-bulk-${status}`}
+          className={`bulk-status-button status-${status}`}
+          type="button"
+          aria-label={`${dayLabel} を一括で ${config.statusLabels[status]} にする`}
+          onClick={() => updateDayAnswers(dayId, status)}
+          disabled={disabled}
+        >
+          All {config.statusLabels[status]}
+        </button>
+      ))}
+    </div>
+  );
+
   const renderStatusButtons = (slotId: string, label: string, view: "desktop" | "mobile") => (
     <div className="status-buttons" role="group" aria-label={label}>
       {STATUS_OPTIONS.map((status) => {
@@ -56,7 +85,10 @@ export default function ScheduleGrid({ config, answers, onChange, disabled = fal
               <th scope="col">時限</th>
               {config.grid.days.map((day) => (
                 <th scope="col" key={day.id}>
-                  {day.label}
+                  <div className="schedule-day-head">
+                    <span>{day.label}</span>
+                    {renderDayBulkButtons(day.label, day.id, "desktop")}
+                  </div>
                 </th>
               ))}
             </tr>
@@ -91,7 +123,10 @@ export default function ScheduleGrid({ config, answers, onChange, disabled = fal
       <div className="schedule-mobile-list" aria-label="予定入力リスト">
         {config.grid.days.map((day) => (
           <section className="schedule-mobile-day" key={day.id} aria-labelledby={`${idPrefix}-${day.id}-heading`}>
-            <h3 id={`${idPrefix}-${day.id}-heading`}>{day.label}</h3>
+            <div className="schedule-mobile-day-head">
+              <h3 id={`${idPrefix}-${day.id}-heading`}>{day.label}</h3>
+              {renderDayBulkButtons(day.label, day.id, "mobile")}
+            </div>
             <div className="schedule-mobile-slots">
               {config.grid.periods.map((period) => {
                 const slot = slotByPosition.get(`${day.id}:${period.id}`);
