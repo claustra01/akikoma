@@ -628,6 +628,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--panel);
+  overflow: hidden;
 }
 
 .schedule-day-head,
@@ -901,7 +902,6 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   .schedule-mobile-day-head {
     padding: 12px;
     background: var(--panel-muted);
-    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   }
 
   .summary-grid {
