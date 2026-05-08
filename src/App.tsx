@@ -4,11 +4,13 @@ import EditResponsePage from "./routes/EditResponsePage";
 import HomePage from "./routes/HomePage";
 import NewPollPage from "./routes/NewPollPage";
 import PollPage from "./routes/PollPage";
+import ResponsePage from "./routes/ResponsePage";
 
 type Route =
   | { name: "home" }
   | { name: "new" }
   | { name: "poll"; slug: string }
+  | { name: "respond"; slug: string }
   | { name: "admin"; slug: string; token: string }
   | { name: "edit"; slug: string; responseId: string }
   | { name: "notFound" };
@@ -27,6 +29,10 @@ function parseRoute(location: Location): Route {
 
   if (segments[0] === "p" && segments.length === 2) {
     return { name: "poll", slug: segments[1] };
+  }
+
+  if (segments[0] === "p" && segments.length === 3 && segments[2] === "poll") {
+    return { name: "respond", slug: segments[1] };
   }
 
   if (segments[0] === "p" && segments.length === 3 && segments[2] === "admin") {
@@ -93,6 +99,7 @@ export default function App() {
         {route.name === "home" && <HomePage />}
         {route.name === "new" && <NewPollPage />}
         {route.name === "poll" && <PollPage slug={route.slug} />}
+        {route.name === "respond" && <ResponsePage slug={route.slug} />}
         {route.name === "admin" && <AdminPage slug={route.slug} token={route.token} />}
         {route.name === "edit" && <EditResponsePage slug={route.slug} responseId={route.responseId} />}
         {route.name === "notFound" && (

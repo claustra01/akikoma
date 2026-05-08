@@ -74,7 +74,7 @@ export default function EditResponsePage({ slug, responseId }: EditResponsePageP
         ...values,
         version: response.version
       });
-      navigate(`/p/${slug}?tab=summary`);
+      navigate(`/p/${slug}`);
     } catch (caught) {
       setError(errorMessage(caught));
     } finally {

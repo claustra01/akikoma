@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import ResponseList from "../components/ResponseList";
-import SummaryGrid from "../components/SummaryGrid";
-import { ApiClientError, getPoll, type PollReadPayload } from "../lib/api";
+import { navigate } from "../App";
+import ResponseForm, { type ResponseFormValues } from "../components/ResponseForm";
+import { ApiClientError, createResponse, getPoll, type PollReadPayload } from "../lib/api";
 import { saveRecentPoll } from "../lib/recentPolls";
 
-type PollPageProps = {
+type ResponsePageProps = {
   slug: string;
 };
 
@@ -15,9 +15,10 @@ function errorMessage(error: unknown): string {
   return "通信に失敗しました";
 }
 
-export default function PollPage({ slug }: PollPageProps) {
+export default function ResponsePage({ slug }: ResponsePageProps) {
   const [payload, setPayload] = useState<PollReadPayload | null>(null);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const loadPoll = useCallback(async () => {
@@ -37,6 +38,20 @@ export default function PollPage({ slug }: PollPageProps) {
   useEffect(() => {
     void loadPoll();
   }, [loadPoll]);
+
+  const handleSubmit = async (values: ResponseFormValues) => {
+    setSubmitting(true);
+    setError("");
+
+    try {
+      await createResponse(slug, values);
+      navigate(`/p/${slug}`);
+    } catch (caught) {
+      setError(errorMessage(caught));
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (loading && payload === null) {
     return (
@@ -62,7 +77,7 @@ export default function PollPage({ slug }: PollPageProps) {
     <section className="page-section">
       <div className="section-heading split-heading">
         <div>
-          <p className="eyebrow">CALENDAR</p>
+          <p className="eyebrow">RESPONSE</p>
           <h1>{payload.poll.title}</h1>
           {payload.poll.description && <p>{payload.poll.description}</p>}
         </div>
@@ -75,22 +90,26 @@ export default function PollPage({ slug }: PollPageProps) {
 
       <section className="surface">
         <div className="section-heading">
-          <h2>集計</h2>
+          <h2>回答する</h2>
         </div>
-        <SummaryGrid config={payload.config} summary={payload.summary} />
-        {!payload.poll.isClosed && (
-          <div className="actions summary-actions">
-            <a className="button button-primary" href={`/p/${slug}/poll`}>
-              回答する
-            </a>
-          </div>
+        {payload.poll.isClosed ? (
+          <p className="message message-warning">この予定は締め切られています。</p>
+        ) : (
+          <ResponseForm
+            config={payload.config}
+            submitLabel="保存"
+            idPrefix="new-response"
+            busy={submitting}
+            onSubmit={handleSubmit}
+          />
         )}
-
-        <div className="section-heading section-heading-nested">
-          <h2>回答一覧</h2>
-        </div>
-        <ResponseList slug={slug} config={payload.config} responses={payload.responses} />
       </section>
+
+      <div className="actions">
+        <a className="button button-secondary" href={`/p/${slug}`}>
+          戻る
+        </a>
+      </div>
     </section>
   );
 }

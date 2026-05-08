@@ -241,44 +241,6 @@ main {
   box-shadow: var(--shadow-subtle);
 }
 
-.tabs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px;
-  margin-top: 20px;
-  padding: 5px;
-  border: 2px solid var(--line);
-  border-radius: var(--radius-md);
-  background: var(--panel-muted);
-}
-
-.tab-button {
-  min-height: 42px;
-  padding: 8px 12px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--text);
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.tab-button.is-active {
-  border-color: var(--line-strong);
-  background: var(--panel);
-  box-shadow: var(--shadow-subtle);
-}
-
-.tab-button:disabled {
-  color: var(--muted);
-  cursor: not-allowed;
-  opacity: 0.66;
-}
-
-.tab-panel {
-  margin-top: 14px;
-}
-
 .section-heading-nested {
   margin-top: 24px;
 }
@@ -871,15 +833,6 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
     margin-bottom: 16px;
     padding: 12px;
     border-radius: var(--radius-sm);
-  }
-
-  .tabs {
-    margin-top: 16px;
-  }
-
-  .tab-button {
-    min-height: 40px;
-    padding: 8px;
   }
 
   .form-grid {
