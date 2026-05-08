@@ -9,11 +9,23 @@ type AdminPageProps = {
   token: string;
 };
 
+type CopyTarget = "public" | "admin";
+
 function errorMessage(error: unknown): string {
   if (error instanceof ApiClientError) {
     return error.message;
   }
   return "通信に失敗しました";
+}
+
+function absoluteUrl(path: string): string {
+  return new URL(path, window.location.origin).toString();
+}
+
+function adminUrl(slug: string, token: string): string {
+  const url = new URL(`/p/${encodeURIComponent(slug)}/admin`, window.location.origin);
+  url.searchParams.set("token", token);
+  return url.toString();
 }
 
 export default function AdminPage({ slug, token }: AdminPageProps) {
@@ -22,6 +34,7 @@ export default function AdminPage({ slug, token }: AdminPageProps) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [copied, setCopied] = useState<CopyTarget | null>(null);
 
   const loadPoll = useCallback(async () => {
     setLoading(true);
@@ -88,6 +101,18 @@ export default function AdminPage({ slug, token }: AdminPageProps) {
     }
   };
 
+  const copyUrl = async (url: string, target: CopyTarget) => {
+    setError("");
+    setNotice("");
+
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(target);
+    } catch {
+      setError("コピーできませんでした。URL を選択してコピーしてください。");
+    }
+  };
+
   if (loading && payload === null) {
     return <LoadingSpinner />;
   }
@@ -99,6 +124,9 @@ export default function AdminPage({ slug, token }: AdminPageProps) {
       </section>
     );
   }
+
+  const publicUrl = absoluteUrl(`/p/${encodeURIComponent(slug)}`);
+  const currentAdminUrl = token ? adminUrl(slug, token) : "";
 
   return (
     <section className="page-section">
@@ -122,11 +150,35 @@ export default function AdminPage({ slug, token }: AdminPageProps) {
         <section className="surface form-stack">
           <dl className="link-list">
             <div>
-              <dt>公開ページ</dt>
-              <dd>
-                <a href={`/p/${slug}`}>{`/p/${slug}`}</a>
+              <dt>公開 URL</dt>
+              <dd className="copy-url-row">
+                <a className="copy-url" href={publicUrl}>{publicUrl}</a>
+                <button
+                  className="button button-secondary copy-button"
+                  type="button"
+                  aria-label="公開 URL をコピー"
+                  onClick={() => void copyUrl(publicUrl, "public")}
+                >
+                  {copied === "public" ? "コピー済" : "コピー"}
+                </button>
               </dd>
             </div>
+            {token && (
+              <div>
+                <dt>管理 URL</dt>
+                <dd className="copy-url-row">
+                  <a className="copy-url" href={currentAdminUrl}>{currentAdminUrl}</a>
+                  <button
+                    className="button button-secondary copy-button"
+                    type="button"
+                    aria-label="管理 URL をコピー"
+                    onClick={() => void copyUrl(currentAdminUrl, "admin")}
+                  >
+                    {copied === "admin" ? "コピー済" : "コピー"}
+                  </button>
+                </dd>
+              </div>
+            )}
             <div>
               <dt>最終更新</dt>
               <dd>{payload.poll.updatedAt ?? ""}</dd>

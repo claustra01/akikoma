@@ -229,8 +229,7 @@ main {
   margin-bottom: 20px;
 }
 
-.section-heading h2,
-.result-panel h2 {
+.section-heading h2 {
   margin: 0;
   font-size: 1.2rem;
   font-weight: 900;
@@ -742,9 +741,23 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   overflow-wrap: anywhere;
 }
 
-.result-panel {
+.copy-url-row {
   display: grid;
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.copy-url {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.copy-button {
+  min-height: 34px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
 }
 
 .recent-section {

@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
-import { ApiClientError, createPoll, type CreatePollPayload } from "../lib/api";
-import { saveRecentPoll } from "../lib/recentPolls";
+import { navigate } from "../App";
+import { ApiClientError, createPoll } from "../lib/api";
 import {
   DEFAULT_END_PERIOD,
   DEFAULT_START_PERIOD,
@@ -36,7 +36,6 @@ export default function NewPollPage() {
   const maxEndDate = startDate ? addDaysToIsoDate(startDate, 13) : "";
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [result, setResult] = useState<CreatePollPayload | null>(null);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -45,8 +44,7 @@ export default function NewPollPage() {
 
     try {
       const created = await createPoll({ title, description, startDate, endDate, startPeriod, endPeriod });
-      saveRecentPoll(created.poll);
-      setResult(created);
+      navigate(created.adminPath);
     } catch (caught) {
       setError(errorMessage(caught));
     } finally {
@@ -175,25 +173,6 @@ export default function NewPollPage() {
         </div>
       </form>
 
-      {result && (
-        <section className="surface result-panel" aria-live="polite">
-          <h2>作成しました</h2>
-          <dl className="link-list">
-            <div>
-              <dt>公開 URL</dt>
-              <dd>
-                <a href={result.publicPath}>{result.publicPath}</a>
-              </dd>
-            </div>
-            <div>
-              <dt>管理 URL</dt>
-              <dd>
-                <a href={result.adminPath}>{result.adminPath}</a>
-              </dd>
-            </div>
-          </dl>
-        </section>
-      )}
     </section>
   );
 }

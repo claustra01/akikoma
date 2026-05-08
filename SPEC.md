@@ -854,6 +854,7 @@ Implement these UI pages:
 
 /new
   Create poll page.
+  Redirects to the admin page after successful creation.
 
 /p/:slug
   Public poll summary page.
@@ -865,7 +866,7 @@ Implement these UI pages:
 
 /p/:slug/admin?token=...
   Admin page.
-  Shows admin controls such as close/reopen and poll deletion.
+  Shows public/admin URLs with copy buttons and admin controls such as close/reopen and poll deletion.
 
 /p/:slug/edit/:responseId
   Edit response page.
