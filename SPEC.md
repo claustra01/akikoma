@@ -149,6 +149,7 @@ Use this structure unless the repository already has a conflicting structure:
 │  │  ├─ HomePage.tsx
 │  │  ├─ NewPollPage.tsx
 │  │  ├─ PollPage.tsx
+│  │  ├─ ResponsePage.tsx
 │  │  ├─ AdminPage.tsx
 │  │  └─ EditResponsePage.tsx
 │  ├─ components/
@@ -277,6 +278,12 @@ Public URL:
 
 ```text
 /p/:slug
+```
+
+Response URL:
+
+```text
+/p/:slug/poll
 ```
 
 Admin URL:
@@ -673,7 +680,7 @@ Response `200`:
 }
 ```
 
-After a successful update in the frontend, redirect the user back to the public poll page summary view, `/p/:slug?tab=summary`.
+After a successful update in the frontend, redirect the user back to the public poll summary page, `/p/:slug`.
 
 Return `409` for version conflict.
 
@@ -849,8 +856,12 @@ Implement these UI pages:
   Create poll page.
 
 /p/:slug
-  Public poll page.
-  Shows schedule grid, summary, existing responses, and response form.
+  Public poll summary page.
+  Shows summary and existing responses.
+
+/p/:slug/poll
+  Response page.
+  Shows the response form for the poll.
 
 /p/:slug/admin?token=...
   Admin page.
@@ -882,9 +893,17 @@ The public poll page should show:
 ```text
 - Poll title
 - Description
-- selected-date-range × selected-period-range timetable grid
 - Summary counts per slot
 - Existing participant responses
+- Link to the response page when the poll is open
+```
+
+The response page should show:
+
+```text
+- Poll title
+- Description
+- selected-date-range × selected-period-range timetable grid
 - Form for new response
 ```
 
