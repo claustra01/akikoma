@@ -58,6 +58,27 @@ export default function App() {
 
   return (
     <div className="app-shell">
+      <svg
+        className="shape-layer"
+        viewBox="0 0 1200 900"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path className="shape-squiggle shape-a" d="M64 134 C116 90 168 178 220 134 S324 90 376 134" />
+        <path className="shape-squiggle shape-b" d="M830 128 C882 84 934 172 986 128 S1090 84 1142 128" />
+        <path className="shape-squiggle shape-c" d="M778 742 C832 698 886 786 940 742 S1048 698 1102 742" />
+        <rect className="shape-tile shape-d" x="82" y="626" width="68" height="68" rx="14" transform="rotate(-12 116 660)" />
+        <rect className="shape-tile shape-e" x="1010" y="318" width="78" height="78" rx="16" transform="rotate(14 1049 357)" />
+        <polygon className="shape-triangle shape-f" points="226,780 294,848 182,862" />
+        <polygon className="shape-triangle shape-g" points="1016,28 1088,92 984,122" />
+        <g className="shape-plus shape-h">
+          <path d="M514 86 h42 v42 h42 v42 h-42 v42 h-42 v-42 h-42 v-42 h42z" />
+        </g>
+        <g className="shape-plus shape-i">
+          <path d="M98 350 h28 v28 h28 v28 h-28 v28 h-28 v-28 h-28 v-28 h28z" />
+        </g>
+      </svg>
       <header className="topbar">
         <a className="brand" href="/">
           みんなの空きコマ

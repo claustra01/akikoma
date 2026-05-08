@@ -23,19 +23,6 @@ export default function SummaryGrid({ config, summary }: SummaryGridProps) {
     return highlight !== "none" ? `summary-highlight summary-highlight-${highlight}` : "";
   };
 
-  const renderHighlightBadge = (slotId: string) => {
-    const cell = getCell(slotId);
-    const totalParticipants = cell.yes + cell.maybe + cell.no + cell.unanswered;
-    const highlight = getAvailabilityHighlight(cell, totalParticipants);
-    if (highlight === "all") {
-      return <span className="summary-badge">全員OK</span>;
-    }
-    if (highlight === "almost") {
-      return <span className="summary-badge">あと1人</span>;
-    }
-    return null;
-  };
-
   const renderCounts = (slotId: string) => {
     const cell = getCell(slotId);
     return (
@@ -81,7 +68,6 @@ export default function SummaryGrid({ config, summary }: SummaryGridProps) {
                 return (
                   <td key={day.id} className={getHighlightClassName(slot.id) || undefined}>
                     <div className="summary-cell" aria-label={`${day.label} ${period.label} の集計`}>
-                      {renderHighlightBadge(slot.id)}
                       {renderCounts(slot.id)}
                     </div>
                   </td>
