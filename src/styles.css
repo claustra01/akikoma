@@ -10,24 +10,36 @@
   --panel-muted: #fff0b8;
   --line: #253238;
   --line-strong: #253238;
-  --table-line: color-mix(in srgb, var(--line) 58%, var(--panel));
+  --table-line: #81888a;
+  --grid-line: rgba(37, 50, 56, 0.05);
+  --divider-line: rgba(37, 50, 56, 0.42);
+  --shadow-line: rgba(37, 50, 56, 0.18);
+  --button-shadow-line: rgba(37, 50, 56, 0.22);
   --text: #263238;
   --muted: #687276;
   --primary: #007c89;
   --primary-strong: #005c66;
   --accent: #f9734e;
   --danger: #d83f67;
-  --focus: #2563eb;
-  --tint-primary: color-mix(in srgb, var(--primary) 11%, var(--panel));
-  --tint-accent: color-mix(in srgb, var(--accent) 13%, var(--panel));
-  --tint-danger: color-mix(in srgb, var(--danger) 9%, var(--panel));
+  --focus-ring: #6692f1;
+  --tint-primary: #e3f0ee;
+  --tint-accent: #feece4;
+  --tint-danger: #fceded;
+  --border-primary: #184b54;
+  --border-accent: #6d4840;
+  --border-danger: #623648;
+  --selected-ring: #47a0a9;
+  --summary-ok-bg: #c1ebcd;
+  --summary-ok-line: #1f7a44;
+  --summary-almost-bg: #e4f7ea;
+  --summary-almost-line: #67a878;
   --shape-blue: #69d2e7;
   --shape-pink: #ff8fab;
   --shape-yellow: #ffd166;
   --shape-mint: #7bd88f;
   --radius-sm: 10px;
   --radius-md: 14px;
-  --shadow-subtle: 4px 4px 0 color-mix(in srgb, var(--line) 18%, transparent);
+  --shadow-subtle: 4px 4px 0 var(--shadow-line);
   color: var(--text);
   background: var(--bg);
 }
@@ -41,8 +53,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--line) 5%, transparent) 1px, transparent 1px),
-    linear-gradient(0deg, color-mix(in srgb, var(--line) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(0deg, var(--grid-line) 1px, transparent 1px),
     var(--bg);
   background-size: 34px 34px;
   color: var(--text);
@@ -62,7 +74,7 @@ textarea {
 }
 
 :focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--focus) 70%, white);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -179,7 +191,7 @@ main {
   justify-items: center;
   gap: 16px;
   padding: 56px 0 34px;
-  border-bottom: 2px dashed color-mix(in srgb, var(--line) 42%, transparent);
+  border-bottom: 2px dashed var(--divider-line);
   text-align: center;
 }
 
@@ -337,7 +349,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   padding: 9px 14px;
   border: 2px solid var(--line);
   border-radius: 999px;
-  box-shadow: 3px 3px 0 color-mix(in srgb, var(--line) 22%, transparent);
+  box-shadow: 3px 3px 0 var(--button-shadow-line);
   font-weight: 900;
   text-decoration: none;
   cursor: pointer;
@@ -348,7 +360,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .button:hover:not(:disabled) {
-  box-shadow: 1px 1px 0 color-mix(in srgb, var(--line) 22%, transparent);
+  box-shadow: 1px 1px 0 var(--button-shadow-line);
   transform: translate(2px, 2px);
 }
 
@@ -389,20 +401,20 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .message-error,
 .state-closed {
-  border: 1px solid color-mix(in srgb, var(--danger) 34%, var(--line));
+  border: 1px solid var(--border-danger);
   background: var(--tint-danger);
   color: var(--danger);
 }
 
 .message-success,
 .state-open {
-  border: 1px solid color-mix(in srgb, var(--primary) 34%, var(--line));
+  border: 1px solid var(--border-primary);
   background: var(--tint-primary);
   color: var(--primary-strong);
 }
 
 .message-warning {
-  border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line));
+  border: 1px solid var(--border-accent);
   background: var(--tint-accent);
   color: var(--accent);
 }
@@ -551,7 +563,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .status-button.is-selected {
   border-color: var(--primary);
   background: var(--tint-primary);
-  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--primary) 72%, var(--panel));
+  box-shadow: inset 0 0 0 2px var(--selected-ring);
 }
 
 .bulk-status-button:disabled,
@@ -577,13 +589,13 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .summary-highlight-all {
-  background: var(--tint-primary);
-  border-left-color: color-mix(in srgb, var(--primary) 42%, var(--line));
+  background: var(--summary-ok-bg);
+  border-left-color: var(--summary-ok-line);
 }
 
 .summary-highlight-almost {
-  background: var(--tint-accent);
-  border-left-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+  background: var(--summary-almost-bg);
+  border-left-color: var(--summary-almost-line);
 }
 
 .compact-counts {
