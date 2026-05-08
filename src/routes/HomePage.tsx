@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { readRecentPolls, type RecentPoll } from "../lib/recentPolls";
+import { readRecentPolls, removeRecentPoll, type RecentPoll } from "../lib/recentPolls";
 
 function formatAccessedAt(value: string): string {
   const date = new Date(value);
@@ -22,45 +22,61 @@ export default function HomePage() {
     setRecentPolls(readRecentPolls());
   }, []);
 
-  return (
-    <section className="page-section">
-      <div className="intro">
-        <p className="eyebrow">HOME</p>
-        <h1>みんなの空きコマ</h1>
-        <p>
-          みんなの空きコマを自動で集計！
-        </p>
-        <a className="button button-primary" href="/new">
-          新規作成
-        </a>
-      </div>
+  const handleRemoveRecent = (slug: string) => {
+    setRecentPolls(removeRecentPoll(slug));
+  };
 
-      {recentPolls.length > 0 && (
-        <section className="surface recent-section">
-          <div className="section-heading">
-            <h2>最近のアクセス</h2>
-          </div>
-          <div className="recent-list">
-            {recentPolls.map((poll) => (
-              <RecentPollLink poll={poll} key={poll.slug} />
-            ))}
+  return (
+    <section className="page-section home-page">
+      <div className="home-dashboard">
+        <section className="home-create-panel">
+          <h1>みんなの空きコマ</h1>
+          <p>みんなの空きコマを自動で集計！</p>
+          <div className="actions home-actions">
+            <a className="button button-primary" href="/new">
+              新規作成
+            </a>
           </div>
         </section>
-      )}
+
+        <section className="recent-section">
+          <div className="section-heading recent-heading">
+            <h2>最近のアクセス</h2>
+          </div>
+          {recentPolls.length === 0 ? (
+            <p className="recent-empty muted">最近開いた予定はありません。</p>
+          ) : (
+            <div className="recent-list">
+              {recentPolls.map((poll) => (
+                <RecentPollItem poll={poll} key={poll.slug} onRemove={handleRemoveRecent} />
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
     </section>
   );
 }
 
-function RecentPollLink({ poll }: { poll: RecentPoll }) {
+function RecentPollItem({ poll, onRemove }: { poll: RecentPoll; onRemove: (slug: string) => void }) {
   const accessedAt = formatAccessedAt(poll.lastAccessedAt);
 
   return (
-    <a className="recent-item" href={`/p/${poll.slug}`}>
-      <span className="recent-title">{poll.title}</span>
-      <span className="recent-meta">
-        {poll.isClosed ? "締め切り済み" : "受付中"}
-        {accessedAt && `・${accessedAt}`}
-      </span>
-    </a>
+    <article className="recent-item">
+      <a className="recent-item-main" href={`/p/${poll.slug}`}>
+        <span className="recent-title">{poll.title}</span>
+        {poll.description && <p className="recent-description">{poll.description}</p>}
+        {accessedAt && <span className="recent-meta">最終アクセス {accessedAt}</span>}
+      </a>
+      <button
+        className="recent-remove-button"
+        type="button"
+        onClick={() => onRemove(poll.slug)}
+        aria-label={`${poll.title} を最近のアクセスから削除`}
+        title="履歴削除"
+      >
+        ×
+      </button>
+    </article>
   );
 }

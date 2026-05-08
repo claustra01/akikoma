@@ -90,21 +90,43 @@ textarea {
   padding: 40px 0 60px;
 }
 
-.intro {
-  max-width: 720px;
+.home-page {
+  width: min(960px, calc(100% - 32px));
 }
 
-.intro h1,
+.home-dashboard {
+  display: grid;
+  gap: 34px;
+}
+
+.home-create-panel {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 56px 0 34px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.home-create-panel h1,
 .section-heading h1 {
   margin: 0;
   font-size: 2rem;
   line-height: 1.25;
 }
 
-.intro p,
+.home-create-panel p,
 .section-heading p {
   color: var(--muted);
   line-height: 1.75;
+}
+
+.home-create-panel p {
+  margin: 0;
+}
+
+.home-actions {
+  margin-top: 4px;
 }
 
 .eyebrow {
@@ -637,7 +659,15 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .recent-section {
-  width: min(760px, 100%);
+  display: grid;
+  gap: 16px;
+  width: min(820px, 100%);
+  margin: 0 auto;
+}
+
+.recent-heading {
+  margin-bottom: 0;
+  text-align: center;
 }
 
 .recent-list {
@@ -645,19 +675,38 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   gap: 10px;
 }
 
+.recent-empty {
+  margin: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  text-align: center;
+}
+
 .recent-item {
   display: grid;
-  gap: 5px;
-  padding: 14px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 0;
   border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: var(--panel);
   color: var(--text);
-  text-decoration: none;
 }
 
 .recent-item:hover {
   border-color: var(--primary);
+}
+
+.recent-item-main {
+  display: grid;
+  gap: 6px;
+  height: 100%;
+  min-width: 0;
+  padding: 16px;
+  color: var(--text);
+  text-decoration: none;
 }
 
 .recent-title {
@@ -665,9 +714,42 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   overflow-wrap: anywhere;
 }
 
+.recent-item-main:hover .recent-title {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.recent-description {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
 .recent-meta {
   color: var(--muted);
   font-size: 0.88rem;
+}
+
+.recent-remove-button {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  margin-right: 16px;
+}
+
+.recent-remove-button:hover {
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
 .sr-only {
@@ -698,7 +780,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
     padding: 24px 0 40px;
   }
 
-  .intro h1,
+  .home-create-panel h1,
   .section-heading h1 {
     font-size: 1.6rem;
   }
@@ -856,7 +938,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
     gap: 8px;
   }
 
-  .intro h1,
+  .home-create-panel h1,
   .section-heading h1 {
     font-size: 1.42rem;
   }

@@ -92,7 +92,7 @@ export default function AdminPage({ slug, token }: AdminPageProps) {
         </div>
         {payload && (
           <span className={`state-badge ${payload.poll.isClosed ? "state-closed" : "state-open"}`}>
-            {payload.poll.isClosed ? "締め切り済み" : "受付中"}
+            {payload.poll.isClosed ? "締切済み" : "受付中"}
           </span>
         )}
       </div>
@@ -118,7 +118,7 @@ export default function AdminPage({ slug, token }: AdminPageProps) {
 
           <div className="actions">
             <button className="button button-primary" type="button" onClick={handleToggle} disabled={busy || !token}>
-              {payload.poll.isClosed ? "回答受付を再開" : "回答受付を締め切る"}
+              {payload.poll.isClosed ? "受付再開" : "受付締切"}
             </button>
             <button className="button button-danger" type="button" onClick={handleDelete} disabled={busy || !token}>
               予定を削除

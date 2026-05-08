@@ -100,7 +100,7 @@ export default function PollPage({ slug }: PollPageProps) {
           {payload.poll.description && <p>{payload.poll.description}</p>}
         </div>
         <span className={`state-badge ${payload.poll.isClosed ? "state-closed" : "state-open"}`}>
-          {payload.poll.isClosed ? "締め切り済み" : "受付中"}
+          {payload.poll.isClosed ? "締切済み" : "受付中"}
         </span>
       </div>
 
