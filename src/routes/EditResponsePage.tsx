@@ -157,6 +157,9 @@ export default function EditResponsePage({ slug, responseId }: EditResponsePageP
       </section>
 
       <div className="actions">
+        <a className="button button-secondary" href={`/p/${slug}`}>
+          戻る
+        </a>
         <button
           className="button button-danger"
           type="button"
@@ -165,9 +168,6 @@ export default function EditResponsePage({ slug, responseId }: EditResponsePageP
         >
           削除
         </button>
-        <a className="button button-secondary" href={`/p/${slug}`}>
-          戻る
-        </a>
       </div>
     </section>
   );
