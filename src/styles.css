@@ -498,6 +498,15 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   vertical-align: top;
 }
 
+.schedule-table th:last-child,
+.schedule-table td:last-child,
+.summary-table th:last-child,
+.summary-table td:last-child,
+.response-table th:last-child,
+.response-table td:last-child {
+  border-right: 0;
+}
+
 .schedule-table th,
 .summary-table th,
 .response-table th {
