@@ -1055,6 +1055,23 @@ If practical, add API tests later. Initial implementation may focus on build, ty
 
 If the exact local Pages Functions command requires adjustment, update scripts accordingly and document the final working command.
 
+Local development should also provide Make targets:
+
+```text
+make dev:
+  build dist
+  apply local D1 migrations for akikoma using .wrangler/state
+  use .wrangler-home for Wrangler local logs/config
+  start Cloudflare Pages dev with Functions, D1, and TOKEN_PEPPER via scripts/pages-dev.sh
+  keep running in the foreground until stopped
+  default URL: http://127.0.0.1:8788
+
+make stop:
+  stop the local Pages dev process started by make dev from another shell
+```
+
+`make dev` may use a local-only default `TOKEN_PEPPER`; override it with `make dev TOKEN_PEPPER=...` when needed.
+
 ## 24. CI/CD
 
 GitHub Actions should provide:
