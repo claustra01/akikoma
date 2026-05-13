@@ -625,12 +625,12 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   border-left: 3px solid transparent;
 }
 
-.summary-highlight-all {
+.summary-highlight-best {
   background: var(--summary-ok-bg);
   border-left-color: var(--summary-ok-line);
 }
 
-.summary-highlight-almost {
+.summary-highlight-second {
   background: var(--summary-almost-bg);
   border-left-color: var(--summary-almost-line);
 }

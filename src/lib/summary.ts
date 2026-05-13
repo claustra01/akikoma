@@ -9,7 +9,18 @@ export type SummaryCell = {
 
 export type Summary = Record<string, SummaryCell>;
 
-export type AvailabilityHighlight = "all" | "almost" | "none";
+export type AvailabilityHighlight = "best" | "second" | "none";
+
+export type RankedSummaryScores = {
+  best: number;
+  second: number;
+};
+
+const STATUS_SCORES: Record<Status, number> = {
+  yes: 2,
+  maybe: 1,
+  no: 0
+};
 
 export type SummaryResponseInput = {
   answers: Record<string, unknown> | AnswersMap;
@@ -63,17 +74,34 @@ export function countAnswers(enabledSlotIds: readonly string[], answers: Answers
   return counts;
 }
 
-export function getAvailabilityHighlight(cell: SummaryCell, totalParticipants: number): AvailabilityHighlight {
-  if (totalParticipants <= 0) {
+export function getSummaryScore(cell: SummaryCell): number {
+  return cell.yes * STATUS_SCORES.yes + cell.maybe * STATUS_SCORES.maybe + cell.no * STATUS_SCORES.no;
+}
+
+export function getRankedScores(summary: Summary): RankedSummaryScores {
+  const scores = [...new Set(Object.values(summary).map(getSummaryScore).filter((score) => score > 0))].sort(
+    (a, b) => b - a
+  );
+
+  return {
+    best: scores[0] ?? 0,
+    second: scores[1] ?? 0
+  };
+}
+
+export function getAvailabilityHighlight(cell: SummaryCell, rankedScores: RankedSummaryScores): AvailabilityHighlight {
+  const score = getSummaryScore(cell);
+
+  if (score <= 0) {
     return "none";
   }
 
-  if (cell.yes === totalParticipants) {
-    return "all";
+  if (score === rankedScores.best) {
+    return "best";
   }
 
-  if (totalParticipants >= 2 && cell.yes === totalParticipants - 1) {
-    return "almost";
+  if (score === rankedScores.second) {
+    return "second";
   }
 
   return "none";

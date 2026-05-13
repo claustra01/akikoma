@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { computeSummary, getAvailabilityHighlight } from "../src/lib/summary";
+import { computeSummary, getAvailabilityHighlight, getRankedScores, getSummaryScore } from "../src/lib/summary";
 
 const slots = ["d0p0", "d0p1", "d1p0"];
 
@@ -40,19 +40,35 @@ describe("computeSummary", () => {
 });
 
 describe("getAvailabilityHighlight", () => {
-  it("marks a slot where everyone can attend", () => {
-    expect(getAvailabilityHighlight({ yes: 3, maybe: 0, no: 0, unanswered: 0 }, 3)).toBe("all");
+  it("scores yes as 2, maybe as 1, and no as 0", () => {
+    expect(getSummaryScore({ yes: 2, maybe: 1, no: 4, unanswered: 3 })).toBe(5);
   });
 
-  it("marks a slot where everyone except one can attend", () => {
-    expect(getAvailabilityHighlight({ yes: 2, maybe: 1, no: 0, unanswered: 0 }, 3)).toBe("almost");
-    expect(getAvailabilityHighlight({ yes: 2, maybe: 0, no: 1, unanswered: 0 }, 3)).toBe("almost");
-    expect(getAvailabilityHighlight({ yes: 2, maybe: 0, no: 0, unanswered: 1 }, 3)).toBe("almost");
+  it("marks highest and second-highest positive slot scores", () => {
+    const summary = {
+      best: { yes: 2, maybe: 0, no: 0, unanswered: 0 },
+      secondA: { yes: 1, maybe: 1, no: 0, unanswered: 0 },
+      secondB: { yes: 0, maybe: 3, no: 0, unanswered: 0 },
+      lower: { yes: 1, maybe: 0, no: 0, unanswered: 0 },
+      zero: { yes: 0, maybe: 0, no: 2, unanswered: 0 }
+    };
+    const rankedScores = getRankedScores(summary);
+
+    expect(getAvailabilityHighlight(summary.best, rankedScores)).toBe("best");
+    expect(getAvailabilityHighlight(summary.secondA, rankedScores)).toBe("second");
+    expect(getAvailabilityHighlight(summary.secondB, rankedScores)).toBe("second");
+    expect(getAvailabilityHighlight(summary.lower, rankedScores)).toBe("none");
+    expect(getAvailabilityHighlight(summary.zero, rankedScores)).toBe("none");
   });
 
-  it("does not highlight empty or weak candidates", () => {
-    expect(getAvailabilityHighlight({ yes: 0, maybe: 0, no: 0, unanswered: 0 }, 0)).toBe("none");
-    expect(getAvailabilityHighlight({ yes: 0, maybe: 1, no: 0, unanswered: 0 }, 1)).toBe("none");
-    expect(getAvailabilityHighlight({ yes: 1, maybe: 1, no: 1, unanswered: 0 }, 3)).toBe("none");
+  it("does not mark a second rank when only one positive score exists", () => {
+    const summary = {
+      positive: { yes: 0, maybe: 1, no: 0, unanswered: 0 },
+      zero: { yes: 0, maybe: 0, no: 1, unanswered: 0 }
+    };
+    const rankedScores = getRankedScores(summary);
+
+    expect(getAvailabilityHighlight(summary.positive, rankedScores)).toBe("best");
+    expect(getAvailabilityHighlight(summary.zero, rankedScores)).toBe("none");
   });
 });

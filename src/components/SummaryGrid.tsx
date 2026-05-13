@@ -1,5 +1,5 @@
 import { UNANSWERED_LABEL, type PollConfig } from "../lib/schema";
-import { getAvailabilityHighlight, type Summary } from "../lib/summary";
+import { getAvailabilityHighlight, getRankedScores, type Summary } from "../lib/summary";
 
 type SummaryGridProps = {
   config: PollConfig;
@@ -8,6 +8,7 @@ type SummaryGridProps = {
 
 export default function SummaryGrid({ config, summary }: SummaryGridProps) {
   const slotByPosition = new Map(config.grid.slots.map((slot) => [`${slot.dayId}:${slot.periodId}`, slot]));
+  const rankedScores = getRankedScores(summary);
   const getCell = (slotId: string) =>
     summary[slotId] ?? {
       yes: 0,
@@ -18,8 +19,7 @@ export default function SummaryGrid({ config, summary }: SummaryGridProps) {
 
   const getHighlightClassName = (slotId: string) => {
     const cell = getCell(slotId);
-    const totalParticipants = cell.yes + cell.maybe + cell.no + cell.unanswered;
-    const highlight = getAvailabilityHighlight(cell, totalParticipants);
+    const highlight = getAvailabilityHighlight(cell, rankedScores);
     return highlight !== "none" ? `summary-highlight summary-highlight-${highlight}` : "";
   };
 

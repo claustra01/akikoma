@@ -832,15 +832,19 @@ Do not use SQL `json_each` for the initial implementation unless necessary.
 Summary UI should lightly highlight strong candidate slots:
 
 ```text
-all participants can attend:
-  yes count equals total participant count
+score:
+  yes = 2
+  maybe = 1
+  no = 0
 
-all but one participant can attend:
-  yes count equals total participant count minus one
-  only applies when there are at least 2 participants
+strongest:
+  score equals the highest positive slot score
+
+second strongest:
+  score equals the second-highest positive slot score
 ```
 
-Do not rely on color alone; include a short text label such as `全員OK` or `あと1人`.
+Highlighting is visual emphasis only; the underlying yes/maybe/no/unanswered counts remain visible.
 
 ## 18. Frontend Requirements
 
