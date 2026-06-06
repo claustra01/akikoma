@@ -1,9 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ResponseList from "../components/ResponseList";
+import SlotResponseModal from "../components/SlotResponseModal";
 import SummaryGrid from "../components/SummaryGrid";
+import type { SummarySlotSelection } from "../components/SummaryGrid";
 import { ApiClientError, getPoll, type PollReadPayload } from "../lib/api";
 import { saveRecentPoll } from "../lib/recentPolls";
+import { getSlotResponseDetails } from "../lib/summary";
 
 type PollPageProps = {
   slug: string;
@@ -20,6 +23,7 @@ export default function PollPage({ slug }: PollPageProps) {
   const [payload, setPayload] = useState<PollReadPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedSlot, setSelectedSlot] = useState<SummarySlotSelection | null>(null);
 
   const loadPoll = useCallback(async () => {
     setLoading(true);
@@ -38,6 +42,22 @@ export default function PollPage({ slug }: PollPageProps) {
   useEffect(() => {
     void loadPoll();
   }, [loadPoll]);
+
+  useEffect(() => {
+    setSelectedSlot(null);
+  }, [slug]);
+
+  const closeSlotModal = useCallback(() => {
+    setSelectedSlot(null);
+  }, []);
+
+  const selectedSlotDetails = useMemo(() => {
+    if (!payload || !selectedSlot) {
+      return [];
+    }
+
+    return getSlotResponseDetails(selectedSlot.slot.id, payload.responses);
+  }, [payload, selectedSlot]);
 
   if (loading && payload === null) {
     return <LoadingSpinner />;
@@ -74,7 +94,12 @@ export default function PollPage({ slug }: PollPageProps) {
         <div className="section-heading">
           <h2>集計</h2>
         </div>
-        <SummaryGrid config={payload.config} summary={payload.summary} />
+        <SummaryGrid
+          config={payload.config}
+          summary={payload.summary}
+          selectedSlotId={selectedSlot?.slot.id ?? null}
+          onSlotSelect={setSelectedSlot}
+        />
         {!payload.poll.isClosed && (
           <div className="actions summary-actions">
             <a className="button button-primary" href={`/p/${slug}/poll`}>
@@ -88,6 +113,15 @@ export default function PollPage({ slug }: PollPageProps) {
         </div>
         <ResponseList slug={slug} config={payload.config} responses={payload.responses} />
       </section>
+
+      <SlotResponseModal
+        isOpen={selectedSlot !== null}
+        dayLabel={selectedSlot?.dayLabel ?? ""}
+        periodLabel={selectedSlot?.periodLabel ?? ""}
+        details={selectedSlotDetails}
+        statusLabels={payload.config.statusLabels}
+        onClose={closeSlotModal}
+      />
     </section>
   );
 }

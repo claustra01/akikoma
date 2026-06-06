@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { computeSummary, getAvailabilityHighlight, getRankedScores, getSummaryScore } from "../src/lib/summary";
+import {
+  computeSummary,
+  getAvailabilityHighlight,
+  getRankedScores,
+  getSlotResponseDetails,
+  getSummaryScore
+} from "../src/lib/summary";
 
 const slots = ["d0p0", "d0p1", "d1p0"];
 
@@ -36,6 +42,34 @@ describe("computeSummary", () => {
 
     expect(summary.d0p0).toEqual({ yes: 0, maybe: 0, no: 0, unanswered: 0 });
     expect(summary.d0p1).toEqual({ yes: 0, maybe: 0, no: 0, unanswered: 0 });
+  });
+});
+
+describe("getSlotResponseDetails", () => {
+  it("returns each participant status for a slot", () => {
+    const details = getSlotResponseDetails("d0p0", [
+      { id: "r1", name: "佐藤", comment: "午前希望", answers: { d0p0: "yes" } },
+      { id: "r2", name: "鈴木", comment: null, answers: { d0p0: "maybe" } },
+      { id: "r3", name: "田中", answers: { d0p0: "no" } }
+    ]);
+
+    expect(details).toEqual([
+      { responseId: "r1", name: "佐藤", comment: "午前希望", status: "yes" },
+      { responseId: "r2", name: "鈴木", comment: null, status: "maybe" },
+      { responseId: "r3", name: "田中", comment: null, status: "no" }
+    ]);
+  });
+
+  it("treats missing or invalid slot answers as unanswered", () => {
+    const details = getSlotResponseDetails("d0p0", [
+      { id: "r1", name: "佐藤", answers: {} },
+      { id: "r2", name: "鈴木", answers: { d0p0: "busy" } as Record<string, unknown> }
+    ]);
+
+    expect(details).toEqual([
+      { responseId: "r1", name: "佐藤", comment: null, status: "unanswered" },
+      { responseId: "r2", name: "鈴木", comment: null, status: "unanswered" }
+    ]);
   });
 });
 

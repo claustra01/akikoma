@@ -899,6 +899,7 @@ The public poll page should show:
 - Poll title
 - Description
 - Summary counts per slot
+- Participant-level answers for a slot in a modal when a summary slot is clicked or tapped
 - Existing participant responses
 - Link to the response page when the poll is open
 ```

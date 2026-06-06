@@ -1,12 +1,20 @@
-import { UNANSWERED_LABEL, type PollConfig } from "../lib/schema";
+import { UNANSWERED_LABEL, type PollConfig, type SlotDefinition } from "../lib/schema";
 import { getAvailabilityHighlight, getRankedScores, type Summary } from "../lib/summary";
+
+export type SummarySlotSelection = {
+  slot: SlotDefinition;
+  dayLabel: string;
+  periodLabel: string;
+};
 
 type SummaryGridProps = {
   config: PollConfig;
   summary: Summary;
+  selectedSlotId?: string | null;
+  onSlotSelect?: (selection: SummarySlotSelection) => void;
 };
 
-export default function SummaryGrid({ config, summary }: SummaryGridProps) {
+export default function SummaryGrid({ config, summary, selectedSlotId, onSlotSelect }: SummaryGridProps) {
   const slotByPosition = new Map(config.grid.slots.map((slot) => [`${slot.dayId}:${slot.periodId}`, slot]));
   const rankedScores = getRankedScores(summary);
   const getCell = (slotId: string) =>
@@ -67,9 +75,14 @@ export default function SummaryGrid({ config, summary }: SummaryGridProps) {
 
                 return (
                   <td key={day.id} className={getHighlightClassName(slot.id) || undefined}>
-                    <div className="summary-cell" aria-label={`${day.label} ${period.label} の集計`}>
+                    <button
+                      className={`summary-cell summary-slot-button${selectedSlotId === slot.id ? " is-selected" : ""}`}
+                      type="button"
+                      onClick={() => onSlotSelect?.({ slot, dayLabel: day.label, periodLabel: period.label })}
+                      aria-label={`${day.label} ${period.label} の参加者別回答を表示`}
+                    >
                       {renderCounts(slot.id)}
-                    </div>
+                    </button>
                   </td>
                 );
               })}

@@ -26,6 +26,22 @@ export type SummaryResponseInput = {
   answers: Record<string, unknown> | AnswersMap;
 };
 
+export type SlotResponseStatus = Status | "unanswered";
+
+export type SlotResponseDetailInput = {
+  id: string;
+  name: string;
+  comment?: string | null;
+  answers: Record<string, unknown> | AnswersMap;
+};
+
+export type SlotResponseDetail = {
+  responseId: string;
+  name: string;
+  comment: string | null;
+  status: SlotResponseStatus;
+};
+
 export function createEmptySummaryCell(): SummaryCell {
   return {
     yes: 0,
@@ -72,6 +88,21 @@ export function countAnswers(enabledSlotIds: readonly string[], answers: Answers
   }
 
   return counts;
+}
+
+export function getSlotResponseDetails(
+  slotId: string,
+  responses: readonly SlotResponseDetailInput[]
+): SlotResponseDetail[] {
+  return responses.map((response) => {
+    const status = response.answers[slotId];
+    return {
+      responseId: response.id,
+      name: response.name,
+      comment: response.comment ?? null,
+      status: isValidStatus(status) ? status : "unanswered"
+    };
+  });
 }
 
 export function getSummaryScore(cell: SummaryCell): number {
