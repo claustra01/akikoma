@@ -48,15 +48,15 @@ describe("computeSummary", () => {
 describe("getSlotResponseDetails", () => {
   it("returns each participant status for a slot", () => {
     const details = getSlotResponseDetails("d0p0", [
-      { id: "r1", name: "佐藤", comment: "午前希望", answers: { d0p0: "yes" } },
-      { id: "r2", name: "鈴木", comment: null, answers: { d0p0: "maybe" } },
+      { id: "r1", name: "佐藤", answers: { d0p0: "yes" } },
+      { id: "r2", name: "鈴木", answers: { d0p0: "maybe" } },
       { id: "r3", name: "田中", answers: { d0p0: "no" } }
     ]);
 
     expect(details).toEqual([
-      { responseId: "r1", name: "佐藤", comment: "午前希望", status: "yes" },
-      { responseId: "r2", name: "鈴木", comment: null, status: "maybe" },
-      { responseId: "r3", name: "田中", comment: null, status: "no" }
+      { responseId: "r1", name: "佐藤", status: "yes" },
+      { responseId: "r2", name: "鈴木", status: "maybe" },
+      { responseId: "r3", name: "田中", status: "no" }
     ]);
   });
 
@@ -67,8 +67,8 @@ describe("getSlotResponseDetails", () => {
     ]);
 
     expect(details).toEqual([
-      { responseId: "r1", name: "佐藤", comment: null, status: "unanswered" },
-      { responseId: "r2", name: "鈴木", comment: null, status: "unanswered" }
+      { responseId: "r1", name: "佐藤", status: "unanswered" },
+      { responseId: "r2", name: "鈴木", status: "unanswered" }
     ]);
   });
 });

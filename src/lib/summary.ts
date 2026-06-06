@@ -31,14 +31,12 @@ export type SlotResponseStatus = Status | "unanswered";
 export type SlotResponseDetailInput = {
   id: string;
   name: string;
-  comment?: string | null;
   answers: Record<string, unknown> | AnswersMap;
 };
 
 export type SlotResponseDetail = {
   responseId: string;
   name: string;
-  comment: string | null;
   status: SlotResponseStatus;
 };
 
@@ -99,7 +97,6 @@ export function getSlotResponseDetails(
     return {
       responseId: response.id,
       name: response.name,
-      comment: response.comment ?? null,
       status: isValidStatus(status) ? status : "unanswered"
     };
   });

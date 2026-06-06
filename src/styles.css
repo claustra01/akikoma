@@ -889,13 +889,6 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   overflow-wrap: anywhere;
 }
 
-.slot-response-comment {
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
-}
-
 .slot-response-empty {
   margin: 0;
   padding: 10px 12px;

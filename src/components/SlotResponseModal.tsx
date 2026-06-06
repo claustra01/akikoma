@@ -118,7 +118,6 @@ export default function SlotResponseModal({
                         {group.map((detail) => (
                           <li key={detail.responseId}>
                             <span className="slot-response-name">{detail.name}</span>
-                            {detail.comment && <span className="slot-response-comment">{detail.comment}</span>}
                           </li>
                         ))}
                       </ul>
