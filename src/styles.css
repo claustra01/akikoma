@@ -5,41 +5,33 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --bg: #fff7da;
-  --panel: #fffefa;
-  --panel-muted: #fff0b8;
-  --line: #253238;
-  --line-strong: #253238;
-  --table-line: #81888a;
-  --grid-line: rgba(37, 50, 56, 0.05);
-  --divider-line: rgba(37, 50, 56, 0.42);
-  --shadow-line: rgba(37, 50, 56, 0.18);
-  --button-shadow-line: rgba(37, 50, 56, 0.22);
-  --text: #263238;
-  --muted: #687276;
-  --primary: #007c89;
-  --primary-strong: #005c66;
-  --accent: #f9734e;
-  --danger: #d83f67;
-  --focus-ring: #6692f1;
-  --tint-primary: #e3f0ee;
-  --tint-accent: #feece4;
-  --tint-danger: #fceded;
-  --border-primary: #184b54;
-  --border-accent: #6d4840;
-  --border-danger: #623648;
-  --selected-ring: #47a0a9;
-  --summary-ok-bg: #c1ebcd;
-  --summary-ok-line: #1f7a44;
-  --summary-almost-bg: #e4f7ea;
-  --summary-almost-line: #67a878;
-  --shape-blue: #69d2e7;
-  --shape-pink: #ff8fab;
-  --shape-yellow: #ffd166;
-  --shape-mint: #7bd88f;
+  --bg: #fff9ee;
+  --panel: #fffdf6;
+  --panel-glass-strong: rgba(255, 253, 246, 0.96);
+  --panel-muted: #eef6ef;
+  --line: #63847f;
+  --table-line: #aebfb7;
+  --divider-line: rgba(99, 132, 127, 0.28);
+  --shadow-line: rgba(48, 78, 82, 0.14);
+  --button-shadow-line: rgba(48, 78, 82, 0.18);
+  --text: #263b3c;
+  --muted: #647574;
+  --primary: #087b86;
+  --primary-strong: #05626b;
+  --accent: #df735b;
+  --danger: #c64b68;
+  --focus-ring: #3d93bd;
+  --tint-primary: #e2f3ef;
+  --tint-accent: #fff0df;
+  --tint-danger: #fdecef;
+  --selected-ring: #66aaa6;
+  --summary-ok-bg: #b9e8c9;
+  --summary-ok-line: #298a55;
+  --summary-almost-bg: #e3f3e9;
+  --summary-almost-line: #6ba97b;
   --radius-sm: 10px;
   --radius-md: 14px;
-  --shadow-subtle: 4px 4px 0 var(--shadow-line);
+  --shadow-subtle: 0 14px 34px var(--shadow-line);
   color: var(--text);
   background: var(--bg);
 }
@@ -53,10 +45,12 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(0deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(rgba(255, 250, 241, 0.48), rgba(255, 250, 241, 0.78)),
+    url("/app-background.webp"),
     var(--bg);
-  background-size: 34px 34px;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
   color: var(--text);
   -webkit-text-size-adjust: 100%;
 }
@@ -85,61 +79,6 @@ textarea {
   overflow-x: hidden;
 }
 
-.shape-layer {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.shape-tile,
-.shape-triangle,
-.shape-plus {
-  opacity: 0.34;
-}
-
-.shape-squiggle {
-  fill: none;
-  stroke-linecap: round;
-  stroke-width: 18;
-}
-
-.shape-a {
-  stroke: var(--shape-pink);
-}
-
-.shape-f {
-  fill: var(--shape-pink);
-}
-
-.shape-b {
-  stroke: var(--shape-blue);
-}
-
-.shape-d {
-  fill: var(--shape-blue);
-}
-
-.shape-c {
-  stroke: var(--shape-yellow);
-}
-
-.shape-e {
-  fill: var(--shape-yellow);
-}
-
-.shape-g,
-.shape-h,
-.shape-i {
-  fill: var(--shape-mint);
-}
-
-.shape-squiggle {
-  opacity: 0.42;
-}
-
 .topbar {
   position: relative;
   z-index: 1;
@@ -148,13 +87,16 @@ textarea {
   justify-content: space-between;
   gap: 16px;
   padding: 16px clamp(16px, 4vw, 40px);
-  border-bottom: 2px solid var(--line);
-  background: var(--panel);
+  border-bottom: 1px solid rgba(99, 132, 127, 0.34);
+  background: linear-gradient(90deg, rgba(255, 246, 226, 0.94), rgba(226, 246, 240, 0.9));
+  box-shadow: 0 10px 28px var(--shadow-line);
+  -webkit-backdrop-filter: blur(12px) saturate(1.08);
+  backdrop-filter: blur(12px) saturate(1.08);
 }
 
 .brand {
-  color: var(--text);
-  font-weight: 800;
+  color: var(--primary-strong);
+  font-weight: 900;
   text-decoration: none;
 }
 
@@ -163,7 +105,16 @@ textarea {
   flex-wrap: wrap;
   gap: 12px;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 800;
+}
+
+.topnav a {
+  color: var(--text);
+  text-decoration-color: rgba(99, 132, 127, 0.46);
+}
+
+.topnav a:hover {
+  color: var(--primary);
 }
 
 main {
@@ -246,10 +197,12 @@ main {
   margin-top: 20px;
   margin-bottom: 20px;
   padding: 22px;
-  border: 2px solid var(--line);
+  border: 1px solid var(--table-line);
   border-radius: var(--radius-md);
-  background: var(--panel);
+  background: var(--panel-glass-strong);
   box-shadow: var(--shadow-subtle);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 .section-heading-nested {
@@ -289,9 +242,9 @@ select {
   max-width: 100%;
   max-inline-size: 100%;
   min-height: 40px;
-  border: 2px solid var(--line-strong);
+  border: 1px solid var(--table-line);
   border-radius: var(--radius-sm);
-  background: var(--panel);
+  background: var(--panel-glass-strong);
   color: var(--text);
 }
 
@@ -370,9 +323,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   justify-content: center;
   min-height: 40px;
   padding: 9px 14px;
-  border: 2px solid var(--line);
+  border: 1px solid rgba(99, 132, 127, 0.82);
   border-radius: 999px;
-  box-shadow: 3px 3px 0 var(--button-shadow-line);
+  box-shadow: 0 4px 12px var(--button-shadow-line);
   font-weight: 900;
   text-decoration: none;
   cursor: pointer;
@@ -383,8 +336,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .button:hover:not(:disabled) {
-  box-shadow: 1px 1px 0 var(--button-shadow-line);
-  transform: translate(2px, 2px);
+  box-shadow: 0 2px 8px var(--button-shadow-line);
+  transform: translateY(1px);
 }
 
 .button:disabled {
@@ -409,9 +362,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .button-primary {
-  border-color: var(--line);
+  border-color: var(--primary-strong);
   background: var(--primary);
-  color: var(--panel);
+  color: #fffdf6;
 }
 
 .button-primary:hover:not(:disabled) {
@@ -419,41 +372,41 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .button-secondary {
-  border-color: var(--line);
-  background: var(--panel-muted);
+  border-color: rgba(99, 132, 127, 0.74);
+  background: #fff1cf;
   color: var(--text);
 }
 
 .button-danger {
-  border-color: var(--line);
+  border-color: #a83e58;
   background: var(--danger);
-  color: var(--panel);
+  color: #fffdf6;
 }
 
 .message {
   margin: 16px 0;
   padding: 12px 14px;
-  border-width: 2px;
+  border: 1px solid var(--table-line);
   border-radius: var(--radius-sm);
   line-height: 1.5;
 }
 
 .message-error,
 .state-closed {
-  border: 1px solid var(--border-danger);
+  border: 1px solid var(--danger);
   background: var(--tint-danger);
   color: var(--danger);
 }
 
 .message-success,
 .state-open {
-  border: 1px solid var(--border-primary);
+  border: 1px solid var(--primary);
   background: var(--tint-primary);
   color: var(--primary-strong);
 }
 
 .message-warning {
-  border: 1px solid var(--border-accent);
+  border: 1px solid var(--accent);
   background: var(--tint-accent);
   color: var(--accent);
 }
@@ -505,7 +458,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   align-items: center;
   min-height: 32px;
   padding: 5px 10px;
-  border-width: 2px;
+  border-width: 1px;
   border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 900;
@@ -518,10 +471,12 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
-  border: 2px solid var(--line);
+  border: 1px solid var(--table-line);
   border-radius: var(--radius-md);
-  background: var(--panel);
-  box-shadow: var(--shadow-subtle);
+  background: var(--panel-glass-strong);
+  box-shadow: 0 10px 24px var(--shadow-line);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 .schedule-mobile-list,
@@ -535,7 +490,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   width: 100%;
   min-width: 760px;
   border-collapse: collapse;
-  background: var(--panel);
+  background: var(--panel-glass-strong);
 }
 
 .schedule-table th,
@@ -562,7 +517,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .schedule-table th,
 .summary-table th,
 .response-table th {
-  background: var(--panel-muted);
+  background: rgba(238, 246, 239, 0.94);
   color: var(--text);
   font-weight: 900;
   text-align: left;
@@ -580,7 +535,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   position: sticky;
   left: 0;
   z-index: 2;
-  box-shadow: 1px 0 0 var(--line);
+  box-shadow: 1px 0 0 var(--table-line);
 }
 
 .schedule-table thead th:first-child,
@@ -620,9 +575,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .status-button,
 .bulk-status-button {
-  border: 2px solid var(--line-strong);
+  border: 1px solid var(--table-line);
   border-radius: 999px;
-  background: var(--panel);
+  background: var(--panel-glass-strong);
   color: var(--text);
   font-weight: 900;
   cursor: pointer;
@@ -683,11 +638,11 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .summary-slot-button:hover {
-  background: var(--tint-primary);
+  background: rgba(226, 243, 239, 0.8);
 }
 
 .summary-slot-button.is-selected {
-  background: var(--tint-primary);
+  background: rgba(226, 243, 239, 0.9);
   box-shadow: inset 0 0 0 2px var(--selected-ring);
 }
 
@@ -720,9 +675,10 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .schedule-mobile-day,
 .response-card {
-  border: 1px solid var(--line);
+  border: 1px solid var(--table-line);
   border-radius: var(--radius-md);
-  background: var(--panel);
+  background: var(--panel-glass-strong);
+  box-shadow: 0 10px 24px var(--shadow-line);
   overflow: hidden;
 }
 
@@ -756,7 +712,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .schedule-mobile-slot {
   gap: 8px;
   padding: 12px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--table-line);
   grid-template-columns: minmax(54px, 0.35fr) minmax(0, 1fr);
   align-items: center;
 }
@@ -796,7 +752,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   display: grid;
   place-items: center;
   padding: 24px;
-  background: rgba(38, 50, 56, 0.48);
+  background: rgba(38, 54, 56, 0.42);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 .slot-response-modal {
@@ -804,10 +762,10 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   grid-template-rows: auto minmax(0, 1fr);
   width: min(560px, calc(100vw - 32px));
   max-height: min(82vh, 720px);
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  background: var(--panel);
-  box-shadow: 6px 6px 0 var(--shadow-line);
+  background: var(--panel-glass-strong);
+  box-shadow: 0 18px 46px rgba(38, 54, 56, 0.22);
   overflow: hidden;
 }
 
@@ -817,8 +775,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   gap: 12px;
   align-items: start;
   padding: 18px;
-  border-bottom: 2px solid var(--line);
-  background: var(--panel);
+  border-bottom: 1px solid var(--table-line);
+  background: linear-gradient(90deg, rgba(255, 246, 226, 0.92), rgba(226, 246, 240, 0.9));
 }
 
 .slot-response-modal-title {
@@ -848,7 +806,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   place-items: center;
   width: 40px;
   height: 40px;
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--panel-muted);
   color: var(--text);
@@ -876,9 +834,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .slot-response-group {
-  border: 2px solid var(--line);
+  border: 1px solid var(--table-line);
   border-radius: var(--radius-sm);
-  background: var(--panel);
+  background: var(--panel-glass-strong);
   overflow: hidden;
 }
 
@@ -946,7 +904,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .disabled-cell {
   color: var(--muted);
-  background: var(--panel-muted);
+  background: rgba(238, 246, 239, 0.76);
 }
 
 .link-list {
@@ -1009,10 +967,11 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .recent-empty {
   margin: 0;
   padding: 18px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--table-line);
   border-radius: var(--radius-md);
-  background: var(--panel);
+  background: var(--panel-glass-strong);
   text-align: center;
+  box-shadow: 0 10px 24px var(--shadow-line);
 }
 
 .recent-item {
@@ -1020,10 +979,11 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   padding: 0;
-  border: 1px solid var(--line);
+  border: 1px solid var(--table-line);
   border-radius: var(--radius-md);
-  background: var(--panel);
+  background: var(--panel-glass-strong);
   color: var(--text);
+  box-shadow: 0 10px 24px var(--shadow-line);
 }
 
 .recent-item:hover {
@@ -1067,9 +1027,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   place-items: center;
   width: 36px;
   height: 36px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--table-line);
   border-radius: var(--radius-sm);
-  background: var(--panel);
+  background: rgba(255, 253, 246, 0.78);
   color: var(--muted);
   font-size: 1.2rem;
   font-weight: 700;
@@ -1096,8 +1056,20 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 @media (max-width: 720px) {
+  body {
+    background:
+      linear-gradient(rgba(255, 250, 241, 0.44), rgba(255, 250, 241, 0.78)),
+      url("/app-background-mobile.webp"),
+      var(--bg);
+    background-position: center top;
+    background-repeat: no-repeat, repeat-y, repeat;
+    background-size: auto, max(540px, 100vw) auto, auto;
+  }
+
   .topbar {
+    gap: 10px;
     padding: 12px 14px;
+    background: linear-gradient(180deg, rgba(255, 246, 226, 0.96), rgba(226, 246, 240, 0.92));
   }
 
   .topbar,
@@ -1106,9 +1078,17 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
     flex-direction: column;
   }
 
+  .brand {
+    text-align: center;
+  }
+
+  .topnav {
+    justify-content: center;
+  }
+
   .page-section {
-    width: min(100% - 20px, 1120px);
-    padding: 24px 0 40px;
+    width: min(100% - 24px, 1120px);
+    padding: 22px 0 40px;
   }
 
   .home-create-panel h1,
@@ -1123,8 +1103,10 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   .surface {
     margin-top: 16px;
     margin-bottom: 16px;
-    padding: 12px;
+    padding: 14px;
     border-radius: var(--radius-sm);
+    background: rgba(255, 253, 246, 0.97);
+    box-shadow: 0 12px 28px var(--shadow-line);
   }
 
   .form-grid {
@@ -1149,7 +1131,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   .schedule-mobile-list,
   .response-card-list {
     display: grid;
-    gap: 12px;
+    gap: 10px;
   }
 
   .schedule-mobile-day h3 {
@@ -1157,8 +1139,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .schedule-mobile-day-head {
-    padding: 12px;
-    background: var(--panel-muted);
+    padding: 10px 12px;
+    background: linear-gradient(90deg, rgba(238, 246, 239, 0.96), rgba(255, 241, 207, 0.84));
   }
 
   .summary-grid {
@@ -1252,6 +1234,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
   .schedule-mobile-slot {
     grid-template-columns: 56px minmax(0, 1fr);
+    padding: 10px;
   }
 
   .status-button {
