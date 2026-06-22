@@ -69,8 +69,21 @@ export default function App() {
           みんなの空きコマ
         </a>
         <nav className="topnav" aria-label="主要ナビゲーション">
-          <a href="/">ホーム</a>
-          <a href="/new">新規作成</a>
+          <a href="/" aria-label="ホーム">
+            <svg className="topnav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 11.4 12 4l8 7.4" />
+              <path d="M6.5 10.2V20h11v-9.8" />
+              <path d="M10 20v-5h4v5" />
+            </svg>
+            <span className="topnav-label">ホーム</span>
+          </a>
+          <a href="/new" aria-label="新規作成">
+            <svg className="topnav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 5v14" />
+              <path d="M5 12h14" />
+            </svg>
+            <span className="topnav-label">新規作成</span>
+          </a>
         </nav>
       </header>
 
