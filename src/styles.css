@@ -340,6 +340,23 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   margin-top: 14px;
 }
 
+.schedule-tools {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.schedule-tool-actions {
+  width: 100%;
+}
+
+.schedule-tool-message {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -1203,6 +1220,10 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
   .modal-backdrop {
     padding: 16px;
+  }
+
+  .schedule-tool-actions .button {
+    flex: 0 1 140px;
   }
 
   .slot-response-modal {

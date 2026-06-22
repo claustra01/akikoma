@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { applyClipboardAnswers, serializeAnswersToTsv } from "../lib/answerClipboard";
 import type { AnswersMap, PollConfig } from "../lib/schema";
 import ScheduleGrid from "./ScheduleGrid";
 
@@ -36,12 +37,58 @@ export default function ResponseForm({
   const [name, setName] = useState(initialValues.name);
   const [comment, setComment] = useState(initialValues.comment);
   const [answers, setAnswers] = useState<AnswersMap>(initialValues.answers);
+  const [clipboardMessage, setClipboardMessage] = useState("");
+  const clipboardTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     setName(initialValues.name);
     setComment(initialValues.comment);
     setAnswers(initialValues.answers);
   }, [initialValues]);
+
+  useEffect(() => {
+    return () => {
+      if (clipboardTimerRef.current !== null) {
+        window.clearTimeout(clipboardTimerRef.current);
+      }
+    };
+  }, []);
+
+  const showClipboardMessage = (message: string) => {
+    setClipboardMessage(message);
+    if (clipboardTimerRef.current !== null) {
+      window.clearTimeout(clipboardTimerRef.current);
+    }
+    clipboardTimerRef.current = window.setTimeout(() => {
+      setClipboardMessage("");
+      clipboardTimerRef.current = null;
+    }, 2200);
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(serializeAnswersToTsv(config, answers));
+      showClipboardMessage("コピーしました");
+    } catch {
+      showClipboardMessage("コピーできませんでした");
+    }
+  };
+
+  const handlePaste = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      const result = applyClipboardAnswers(config, answers, text);
+      if (!result.ok) {
+        showClipboardMessage(result.error);
+        return;
+      }
+
+      setAnswers(result.value.answers);
+      showClipboardMessage("貼り付けました");
+    } catch {
+      showClipboardMessage("貼り付けできませんでした");
+    }
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -72,6 +119,32 @@ export default function ResponseForm({
           rows={3}
           disabled={disabled || busy}
         />
+      </div>
+
+      <div className="schedule-tools">
+        <div className="actions schedule-tool-actions" role="group" aria-label="予定入力のコピーと貼り付け">
+          <button
+            className="button button-secondary"
+            type="button"
+            onClick={handleCopy}
+            disabled={disabled || busy}
+          >
+            コピー
+          </button>
+          <button
+            className="button button-secondary"
+            type="button"
+            onClick={handlePaste}
+            disabled={disabled || busy}
+          >
+            貼り付け
+          </button>
+        </div>
+        {clipboardMessage && (
+          <p className="schedule-tool-message" role="status">
+            {clipboardMessage}
+          </p>
+        )}
       </div>
 
       <ScheduleGrid

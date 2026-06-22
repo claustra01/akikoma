@@ -919,9 +919,14 @@ The response form should allow:
 - participant name
 - optional comment
 - yes / maybe / no / unanswered for each slot
+- copy / paste of the timetable answers as spreadsheet-compatible tab-separated text
 ```
 
 Use one-click controls for status selection. Each cell shows ○ / △ / × buttons; clicking the selected value again clears the cell back to unanswered.
+
+When pasted timetable data has a different grid size from the current poll, apply it from the top-left of the current
+grid. Ignore pasted rows or columns that overflow the current grid. Leave current answers outside the pasted range
+unchanged. Blank pasted cells inside the applied range mean unanswered.
 
 Use Japanese UI labels by default:
 
