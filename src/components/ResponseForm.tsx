@@ -25,6 +25,22 @@ const EMPTY_VALUES: ResponseFormValues = {
   answers: {}
 };
 
+function pasteErrorMessage(error: unknown): string {
+  if (!window.isSecureContext) {
+    return "HTTPSで開くと貼り付けできます";
+  }
+
+  if (!navigator.clipboard?.readText) {
+    return "このブラウザでは貼り付けできません";
+  }
+
+  if (error instanceof DOMException && error.name === "NotAllowedError") {
+    return "ブラウザで貼り付けを許可してください";
+  }
+
+  return "貼り付けできませんでした";
+}
+
 export default function ResponseForm({
   config,
   initialValues = EMPTY_VALUES,
@@ -85,8 +101,8 @@ export default function ResponseForm({
 
       setAnswers(result.value.answers);
       showClipboardMessage("貼り付けました");
-    } catch {
-      showClipboardMessage("貼り付けできませんでした");
+    } catch (caught) {
+      showClipboardMessage(pasteErrorMessage(caught));
     }
   };
 
