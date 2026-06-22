@@ -1,7 +1,7 @@
 :root {
   font-family:
-    "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Yu Gothic", "Yu Gothic UI",
-    ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -52,6 +52,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   color: var(--text);
+  line-height: 1.6;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -87,16 +88,16 @@ textarea {
   justify-content: space-between;
   gap: 16px;
   padding: 16px clamp(16px, 4vw, 40px);
-  border-bottom: 1px solid rgba(99, 132, 127, 0.34);
-  background: linear-gradient(90deg, rgba(255, 246, 226, 0.94), rgba(226, 246, 240, 0.9));
-  box-shadow: 0 10px 28px var(--shadow-line);
-  -webkit-backdrop-filter: blur(12px) saturate(1.08);
-  backdrop-filter: blur(12px) saturate(1.08);
+  border-bottom: 1px solid rgba(99, 132, 127, 0.24);
+  background: rgba(255, 253, 246, 0.9);
+  box-shadow: 0 8px 22px rgba(48, 78, 82, 0.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.04);
+  backdrop-filter: blur(14px) saturate(1.04);
 }
 
 .brand {
   color: var(--primary-strong);
-  font-weight: 900;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -105,7 +106,7 @@ textarea {
   flex-wrap: wrap;
   gap: 12px;
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .topnav a {
@@ -166,7 +167,7 @@ main {
   margin: 0;
   font-size: 2rem;
   line-height: 1.25;
-  font-weight: 900;
+  font-weight: 500;
 }
 
 .home-create-panel p,
@@ -187,7 +188,7 @@ main {
   margin: 0 0 8px;
   color: var(--accent);
   font-size: 0.82rem;
-  font-weight: 900;
+  font-weight: 500;
   letter-spacing: 0;
 }
 
@@ -198,7 +199,7 @@ main {
 .section-heading h2 {
   margin: 0;
   font-size: 1.2rem;
-  font-weight: 900;
+  font-weight: 500;
 }
 
 .split-heading {
@@ -245,7 +246,7 @@ main {
 }
 
 .form-row label {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 input,
@@ -329,7 +330,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   margin: 0;
   color: var(--muted);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .button {
@@ -341,7 +342,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   border: 1px solid rgba(99, 132, 127, 0.82);
   border-radius: 999px;
   box-shadow: 0 4px 12px var(--button-shadow-line);
-  font-weight: 900;
+  font-weight: 500;
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -476,7 +477,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   border-width: 1px;
   border-radius: 999px;
   font-size: 0.9rem;
-  font-weight: 900;
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -534,7 +535,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .response-table th {
   background: rgba(238, 246, 239, 0.94);
   color: var(--text);
-  font-weight: 900;
+  font-weight: 500;
   text-align: left;
 }
 
@@ -543,6 +544,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .schedule-table tbody th,
 .summary-table tbody th {
   white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .schedule-table th:first-child,
@@ -568,6 +571,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .summary-day-label {
   display: inline-flex;
+  justify-content: center;
   white-space: nowrap;
 }
 
@@ -594,7 +598,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   border-radius: 999px;
   background: var(--panel-glass-strong);
   color: var(--text);
-  font-weight: 900;
+  font-weight: 500;
   cursor: pointer;
 }
 
@@ -685,7 +689,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .table-action {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .schedule-mobile-day,
@@ -707,7 +711,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .schedule-day-head {
   gap: 7px;
+  justify-items: center;
   min-width: 0;
+  text-align: center;
 }
 
 .schedule-day-head > span {
@@ -722,6 +728,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .response-card h3 {
   margin: 0;
   font-size: 1rem;
+  font-weight: 500;
 }
 
 .schedule-mobile-slot {
@@ -733,7 +740,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .schedule-mobile-slot-label {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .response-card-head {
@@ -791,7 +798,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   align-items: start;
   padding: 18px;
   border-bottom: 1px solid var(--table-line);
-  background: linear-gradient(90deg, rgba(255, 246, 226, 0.92), rgba(226, 246, 240, 0.9));
+  background: rgba(255, 253, 246, 0.94);
 }
 
 .slot-response-modal-title {
@@ -806,7 +813,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .slot-response-modal-title h2 {
   font-size: 1.25rem;
   line-height: 1.35;
-  font-weight: 900;
+  font-weight: 500;
   overflow-wrap: anywhere;
 }
 
@@ -826,7 +833,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   background: var(--panel-muted);
   color: var(--text);
   font-size: 1.4rem;
-  font-weight: 900;
+  font-weight: 500;
   line-height: 1;
   cursor: pointer;
 }
@@ -863,7 +870,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   padding: 10px 12px;
   border-bottom: 1px solid var(--table-line);
   background: var(--panel-muted);
-  font-weight: 900;
+  font-weight: 500;
 }
 
 .slot-response-group-yes .slot-response-group-head {
@@ -907,7 +914,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .slot-response-name {
-  font-weight: 900;
+  font-weight: 500;
   overflow-wrap: anywhere;
 }
 
@@ -935,7 +942,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .link-list dt {
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .link-list dd {
@@ -1016,7 +1023,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .recent-title {
-  font-weight: 700;
+  font-weight: 500;
   overflow-wrap: anywhere;
 }
 
@@ -1047,7 +1054,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   background: rgba(255, 253, 246, 0.78);
   color: var(--muted);
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1;
   cursor: pointer;
   margin-right: 16px;
@@ -1087,7 +1094,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
     justify-content: space-between;
     gap: 10px;
     padding: 10px 12px;
-    background: linear-gradient(180deg, rgba(255, 246, 226, 0.96), rgba(226, 246, 240, 0.92));
+    background: rgba(255, 253, 246, 0.94);
+    box-shadow: 0 6px 18px rgba(48, 78, 82, 0.1);
   }
 
   .split-heading {
@@ -1191,7 +1199,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
   .schedule-mobile-day-head {
     padding: 10px 12px;
-    background: linear-gradient(90deg, rgba(238, 246, 239, 0.96), rgba(255, 241, 207, 0.84));
+    background: rgba(238, 246, 239, 0.9);
   }
 
   .summary-grid {
@@ -1206,6 +1214,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
   .summary-table th,
   .summary-table td {
+    overflow: hidden;
     padding: 3px 2px;
     border-right-width: 1px;
     vertical-align: middle;
@@ -1228,6 +1237,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .summary-day-label {
+    min-width: 0;
+    max-width: 100%;
     display: grid;
     justify-items: center;
     gap: 2px;
@@ -1237,6 +1248,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   .summary-day-date,
   .summary-day-weekday {
     display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: clip;
   }
 
   .summary-day-weekday {
@@ -1260,6 +1274,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .summary-cell {
+    min-width: 0;
     place-items: center;
     gap: 1px;
     font-size: 0.55rem;
@@ -1272,6 +1287,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .summary-count {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: clip;
     white-space: nowrap;
   }
 
