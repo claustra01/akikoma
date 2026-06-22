@@ -596,6 +596,15 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   min-width: 96px;
 }
 
+.summary-day-label {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.summary-table thead th {
+  text-align: center;
+}
+
 .status-buttons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1166,6 +1175,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   .summary-table td {
     padding: 3px 2px;
     border-right-width: 1px;
+    vertical-align: middle;
   }
 
   .summary-table th:first-child {
@@ -1175,12 +1185,33 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .summary-table thead th {
-    height: 54px;
+    height: auto;
+    min-height: 42px;
     font-size: 0.62rem;
     line-height: 1.05;
     text-align: center;
     white-space: normal;
     word-break: keep-all;
+  }
+
+  .summary-day-label {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    line-height: 1.05;
+  }
+
+  .summary-day-date,
+  .summary-day-weekday {
+    display: block;
+  }
+
+  .summary-day-weekday {
+    font-size: 0.58rem;
+  }
+
+  .summary-day-paren {
+    display: none;
   }
 
   .summary-table tbody th {

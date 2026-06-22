@@ -14,6 +14,38 @@ type SummaryGridProps = {
   onSlotSelect?: (selection: SummarySlotSelection) => void;
 };
 
+function splitDayLabel(label: string): { date: string; weekday: string } | null {
+  const match = /^(.+)\(([^()]+)\)$/.exec(label);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    date: match[1],
+    weekday: match[2]
+  };
+}
+
+function renderDayLabel(label: string) {
+  const parts = splitDayLabel(label);
+  if (!parts) {
+    return label;
+  }
+
+  return (
+    <span className="summary-day-label" aria-label={label}>
+      <span className="summary-day-date" aria-hidden="true">
+        {parts.date}
+      </span>
+      <span className="summary-day-weekday" aria-hidden="true">
+        <span className="summary-day-paren">(</span>
+        {parts.weekday}
+        <span className="summary-day-paren">)</span>
+      </span>
+    </span>
+  );
+}
+
 export default function SummaryGrid({ config, summary, selectedSlotId, onSlotSelect }: SummaryGridProps) {
   const slotByPosition = new Map(config.grid.slots.map((slot) => [`${slot.dayId}:${slot.periodId}`, slot]));
   const rankedScores = getRankedScores(summary);
@@ -54,7 +86,7 @@ export default function SummaryGrid({ config, summary, selectedSlotId, onSlotSel
             <th scope="col">時限</th>
             {config.grid.days.map((day) => (
               <th scope="col" key={day.id}>
-                {day.label}
+                {renderDayLabel(day.label)}
               </th>
             ))}
           </tr>
