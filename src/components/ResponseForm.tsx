@@ -79,7 +79,7 @@ export default function ResponseForm({
     clipboardTimerRef.current = window.setTimeout(() => {
       setClipboardMessage("");
       clipboardTimerRef.current = null;
-    }, 2200);
+    }, 1200);
   };
 
   const handleCopy = async () => {
