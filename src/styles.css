@@ -1209,11 +1209,15 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .app-shell::before {
+    background:
+      linear-gradient(rgba(255, 250, 241, 0.4), rgba(255, 250, 241, 0.72)),
+      url("/app-background-mobile-tall.webp"),
+      var(--bg);
     background-size:
       auto,
-      max(720px, 100vw) auto,
+      max(520px, 100vw) auto,
       auto;
-    animation-duration: 95s;
+    animation-duration: 85s;
   }
 
   .topbar {
