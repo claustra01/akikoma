@@ -128,7 +128,6 @@ export default function EditResponsePage({ slug, responseId }: EditResponsePageP
     <section className="page-section">
       <div className="section-heading split-heading">
         <div>
-          <p className="eyebrow">EDIT</p>
           <h1>{payload.poll.title}</h1>
         </div>
         <span className={`state-badge ${payload.poll.isClosed ? "state-closed" : "state-open"}`}>

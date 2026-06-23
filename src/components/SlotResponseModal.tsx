@@ -88,7 +88,6 @@ export default function SlotResponseModal({
       >
         <header className="slot-response-modal-head">
           <div className="slot-response-modal-title">
-            <p className="eyebrow">DETAIL</p>
             <h2 id="slot-response-modal-title">{dayLabel} {periodLabel}</h2>
             <p>参加者別回答</p>
           </div>

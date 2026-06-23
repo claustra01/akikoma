@@ -74,7 +74,6 @@ export default function ResponsePage({ slug }: ResponsePageProps) {
     <section className="page-section">
       <div className="section-heading split-heading">
         <div>
-          <p className="eyebrow">POLL</p>
           <h1>{payload.poll.title}</h1>
           {payload.poll.description && <p>{payload.poll.description}</p>}
         </div>

@@ -66,7 +66,7 @@ export default function App() {
     <div className="app-shell">
       <header className="topbar">
         <a className="brand" href="/">
-          みんなの空きコマ
+          <img className="brand-logo" src="/title-logo.png" alt="みんなの空きコマ" width="1100" height="176" />
         </a>
         <nav className="topnav" aria-label="主要ナビゲーション">
           <a href="/" aria-label="ホーム">

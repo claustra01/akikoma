@@ -138,11 +138,19 @@ textarea {
 }
 
 .brand {
-  color: var(--primary-strong);
-  font-size: 1.1rem;
-  font-weight: 500;
-  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  line-height: 0;
   text-decoration: none;
+}
+
+.brand-logo {
+  display: block;
+  width: clamp(190px, 20vw, 270px);
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(48, 78, 82, 0.16));
 }
 
 .topnav {
@@ -214,6 +222,17 @@ main {
   font-weight: 500;
 }
 
+.home-logo-heading {
+  line-height: 0;
+}
+
+.home-logo {
+  display: block;
+  width: min(440px, 86vw);
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(48, 78, 82, 0.15));
+}
+
 .home-create-panel p,
 .section-heading p {
   color: var(--muted);
@@ -226,14 +245,6 @@ main {
 
 .home-actions {
   margin-top: 4px;
-}
-
-.eyebrow {
-  margin: 0 0 8px;
-  color: var(--accent);
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0;
 }
 
 .section-heading {
@@ -929,7 +940,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   overflow-wrap: anywhere;
 }
 
-.slot-response-modal-title p:not(.eyebrow) {
+.slot-response-modal-title p {
   margin-top: 4px;
   color: var(--muted);
   font-size: 0.92rem;
@@ -1217,7 +1228,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
       auto,
       max(520px, 100vw) auto,
       auto;
-    animation-duration: 85s;
+    animation-duration: 48s;
   }
 
   .topbar {
@@ -1241,13 +1252,13 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .brand {
-    font-size: 1rem;
     min-width: 0;
-    overflow: hidden;
     flex: 1 1 auto;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow: visible;
+  }
+
+  .brand-logo {
+    width: min(184px, calc(100vw - 116px));
   }
 
   .topnav {
@@ -1292,6 +1303,14 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   .home-create-panel h1,
   .section-heading h1 {
     font-size: 1.6rem;
+  }
+
+  .home-logo-heading {
+    line-height: 0;
+  }
+
+  .home-logo {
+    width: min(330px, 90vw);
   }
 
   .section-heading {

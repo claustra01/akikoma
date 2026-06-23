@@ -79,7 +79,6 @@ export default function PollPage({ slug }: PollPageProps) {
     <section className="page-section">
       <div className="section-heading split-heading">
         <div>
-          <p className="eyebrow">CALENDAR</p>
           <h1>{payload.poll.title}</h1>
           {payload.poll.description && <p>{payload.poll.description}</p>}
         </div>

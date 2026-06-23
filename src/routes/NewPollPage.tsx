@@ -55,7 +55,6 @@ export default function NewPollPage() {
   return (
     <section className="page-section">
       <div className="section-heading">
-        <p className="eyebrow">NEW</p>
         <h1>新規作成</h1>
       </div>
 
