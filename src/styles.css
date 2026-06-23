@@ -87,7 +87,7 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 16px clamp(16px, 4vw, 40px);
+  padding: 14px clamp(16px, 4vw, 40px);
   border-bottom: 1px solid rgba(99, 132, 127, 0.24);
   background: rgba(255, 253, 246, 0.9);
   box-shadow: 0 8px 22px rgba(48, 78, 82, 0.1);
@@ -141,7 +141,7 @@ main {
 .page-section {
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 40px 0 60px;
+  padding: 32px 0 48px;
 }
 
 .home-page {
@@ -150,14 +150,14 @@ main {
 
 .home-dashboard {
   display: grid;
-  gap: 34px;
+  gap: 28px;
 }
 
 .home-create-panel {
   display: grid;
   justify-items: center;
-  gap: 16px;
-  padding: 56px 0 34px;
+  gap: 12px;
+  padding: 44px 0 28px;
   border-bottom: 2px dashed var(--divider-line);
   text-align: center;
 }
@@ -193,7 +193,7 @@ main {
 }
 
 .section-heading {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .section-heading h2 {
@@ -210,9 +210,9 @@ main {
 }
 
 .surface {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding: 22px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 18px;
   border: 1px solid var(--table-line);
   border-radius: var(--radius-md);
   background: var(--panel-glass-strong);
@@ -222,7 +222,7 @@ main {
 }
 
 .section-heading-nested {
-  margin-top: 24px;
+  margin-top: 20px;
 }
 
 .form-stack,
@@ -233,16 +233,16 @@ main {
 }
 
 .form-stack {
-  gap: 18px;
+  gap: 14px;
 }
 
 .form-row {
-  gap: 8px;
+  gap: 6px;
 }
 
 .form-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 12px;
 }
 
 .form-row label {
@@ -257,7 +257,7 @@ select {
   min-inline-size: 0;
   max-width: 100%;
   max-inline-size: 100%;
-  min-height: 40px;
+  min-height: 38px;
   border: 1px solid var(--table-line);
   border-radius: var(--radius-sm);
   background: var(--panel-glass-strong);
@@ -266,7 +266,7 @@ select {
 
 input,
 textarea {
-  padding: 10px 12px;
+  padding: 9px 11px;
 }
 
 textarea {
@@ -274,7 +274,7 @@ textarea {
 }
 
 select {
-  padding: 8px 10px;
+  padding: 7px 10px;
 }
 
 input[type="date"] {
@@ -300,19 +300,19 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   justify-content: center;
 }
 
 .summary-actions {
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .schedule-tools {
   display: grid;
   justify-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .schedule-tool-actions {
@@ -337,8 +337,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 9px 14px;
+  min-height: 38px;
+  padding: 8px 14px;
   border: 1px solid rgba(99, 132, 127, 0.82);
   border-radius: 999px;
   box-shadow: 0 4px 12px var(--button-shadow-line);
@@ -363,7 +363,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .actions > .button {
   min-width: 148px;
-  min-height: 44px;
+  min-height: 42px;
   padding-inline: 18px;
 }
 
@@ -375,6 +375,13 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   min-width: 0;
   min-height: 42px;
   padding-inline: 14px;
+  border-color: rgba(99, 132, 127, 0.62);
+  box-shadow: 0 1px 4px rgba(48, 78, 82, 0.1);
+}
+
+.schedule-tool-actions > .button:hover:not(:disabled) {
+  box-shadow: 0 1px 3px rgba(48, 78, 82, 0.12);
+  transform: translateY(1px);
 }
 
 .button-primary {
@@ -490,7 +497,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   border: 1px solid var(--table-line);
   border-radius: var(--radius-md);
   background: var(--panel-glass-strong);
-  box-shadow: 0 10px 24px var(--shadow-line);
+  box-shadow: 0 8px 22px var(--shadow-line);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
@@ -517,7 +524,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .response-table td {
   border-bottom: 1px solid var(--table-line);
   border-right: 1px solid var(--table-line);
-  padding: 11px;
+  padding: 9px;
   vertical-align: top;
 }
 
@@ -642,7 +649,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .summary-slot-button {
   width: 100%;
-  min-height: 70px;
+  min-height: 64px;
   padding: 0;
   border: 0;
   border-radius: 8px;
@@ -685,7 +692,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .compact-counts {
   grid-template-columns: repeat(4, max-content);
-  gap: 8px;
+  gap: 7px;
 }
 
 .table-action {
@@ -697,7 +704,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   border: 1px solid var(--table-line);
   border-radius: var(--radius-md);
   background: var(--panel-glass-strong);
-  box-shadow: 0 10px 24px var(--shadow-line);
+  box-shadow: 0 8px 22px var(--shadow-line);
   overflow: hidden;
 }
 
@@ -710,7 +717,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .schedule-day-head {
-  gap: 7px;
+  gap: 6px;
   justify-items: center;
   min-width: 0;
   text-align: center;
@@ -721,7 +728,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .schedule-mobile-day-head {
-  gap: 8px;
+  gap: 6px;
 }
 
 .schedule-mobile-day h3,
@@ -732,8 +739,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .schedule-mobile-slot {
-  gap: 8px;
-  padding: 12px;
+  gap: 7px;
+  padding: 10px;
   border-top: 1px solid var(--table-line);
   grid-template-columns: minmax(54px, 0.35fr) minmax(0, 1fr);
   align-items: center;
@@ -751,8 +758,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 .response-card {
-  gap: 12px;
-  padding: 14px;
+  gap: 10px;
+  padding: 12px;
 }
 
 .response-card p {
@@ -773,7 +780,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   z-index: 20;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 20px;
   background: rgba(38, 54, 56, 0.42);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
@@ -794,9 +801,9 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .slot-response-modal-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
+  gap: 10px;
   align-items: start;
-  padding: 18px;
+  padding: 16px;
   border-bottom: 1px solid var(--table-line);
   background: rgba(255, 253, 246, 0.94);
 }
@@ -844,15 +851,15 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .slot-response-modal-body {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   min-height: 0;
-  padding: 16px;
+  padding: 14px;
   overflow-y: auto;
 }
 
 .slot-response-groups {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .slot-response-group {
@@ -866,8 +873,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 10px 12px;
+  gap: 10px;
+  padding: 9px 11px;
   border-bottom: 1px solid var(--table-line);
   background: var(--panel-muted);
   font-weight: 500;
@@ -905,7 +912,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 .slot-response-list li {
   display: grid;
   gap: 3px;
-  padding: 10px 12px;
+  padding: 9px 11px;
   border-top: 1px solid var(--table-line);
 }
 
@@ -920,7 +927,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .slot-response-empty {
   margin: 0;
-  padding: 10px 12px;
+  padding: 9px 11px;
   color: var(--muted);
 }
 
@@ -931,7 +938,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .link-list {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   margin: 0;
 }
 
@@ -971,7 +978,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .recent-section {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   width: min(820px, 100%);
   margin: 0 auto;
 }
@@ -983,17 +990,17 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .recent-list {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .recent-empty {
   margin: 0;
-  padding: 18px;
+  padding: 14px;
   border: 1px solid var(--table-line);
   border-radius: var(--radius-md);
   background: var(--panel-glass-strong);
   text-align: center;
-  box-shadow: 0 10px 24px var(--shadow-line);
+  box-shadow: 0 8px 22px var(--shadow-line);
 }
 
 .recent-item {
@@ -1005,7 +1012,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   border-radius: var(--radius-md);
   background: var(--panel-glass-strong);
   color: var(--text);
-  box-shadow: 0 10px 24px var(--shadow-line);
+  box-shadow: 0 8px 22px var(--shadow-line);
 }
 
 .recent-item:hover {
@@ -1014,10 +1021,10 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
 .recent-item-main {
   display: grid;
-  gap: 6px;
+  gap: 5px;
   height: 100%;
   min-width: 0;
-  padding: 16px;
+  padding: 14px;
   color: var(--text);
   text-decoration: none;
 }
@@ -1057,7 +1064,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   font-weight: 500;
   line-height: 1;
   cursor: pointer;
-  margin-right: 16px;
+  margin-right: 14px;
 }
 
 .recent-remove-button:hover {
@@ -1092,8 +1099,8 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    padding: 10px 12px;
+    gap: 8px;
+    padding: 8px 12px;
     background: rgba(255, 253, 246, 0.94);
     box-shadow: 0 6px 18px rgba(48, 78, 82, 0.1);
   }
@@ -1147,7 +1154,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
   .page-section {
     width: min(100% - 24px, 1120px);
-    padding: 22px 0 40px;
+    padding: 18px 0 32px;
   }
 
   .home-create-panel h1,
@@ -1156,13 +1163,13 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .section-heading {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   .surface {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    padding: 14px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    padding: 12px;
     border-radius: var(--radius-sm);
     background: rgba(255, 253, 246, 0.97);
     box-shadow: 0 12px 28px var(--shadow-line);
@@ -1190,7 +1197,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   .schedule-mobile-list,
   .response-card-list {
     display: grid;
-    gap: 10px;
+    gap: 8px;
   }
 
   .schedule-mobile-day h3 {
@@ -1198,7 +1205,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .schedule-mobile-day-head {
-    padding: 10px 12px;
+    padding: 8px 10px;
     background: rgba(238, 246, 239, 0.9);
   }
 
@@ -1282,7 +1289,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .summary-slot-button {
-    min-height: 50px;
+    min-height: 46px;
     border-radius: 6px;
   }
 
@@ -1303,17 +1310,17 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
   .schedule-mobile-slot {
     grid-template-columns: 56px minmax(0, 1fr);
-    padding: 10px;
+    padding: 8px 10px;
   }
 
   .status-button {
-    min-height: 42px;
+    min-height: 40px;
     padding: 4px;
     font-size: 1rem;
   }
 
   .bulk-status-button {
-    min-height: 38px;
+    min-height: 36px;
     font-size: 0.88rem;
   }
 
@@ -1326,7 +1333,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .modal-backdrop {
-    padding: 16px;
+    padding: 12px;
   }
 
   .slot-response-modal {
@@ -1336,20 +1343,20 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   }
 
   .slot-response-modal-head {
-    padding: 14px;
-  }
-
-  .slot-response-modal-body {
     padding: 12px;
   }
 
+  .slot-response-modal-body {
+    padding: 10px;
+  }
+
   .slot-response-group-head {
-    padding: 9px 10px;
+    padding: 8px 10px;
   }
 
   .slot-response-list li,
   .slot-response-empty {
-    padding: 9px 10px;
+    padding: 8px 10px;
   }
 }
 
@@ -1365,7 +1372,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 
   .schedule-mobile-slot {
     grid-template-columns: 50px minmax(0, 1fr);
-    gap: 6px;
+    gap: 5px;
   }
 
   .status-buttons {
