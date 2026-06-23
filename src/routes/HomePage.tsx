@@ -75,7 +75,10 @@ function RecentPollItem({ poll, onRemove }: { poll: RecentPoll; onRemove: (slug:
         aria-label={`${poll.title} を最近のアクセスから削除`}
         title="履歴削除"
       >
-        ×
+        <svg className="recent-remove-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="m6 6 12 12" />
+          <path d="M18 6 6 18" />
+        </svg>
       </button>
     </article>
   );
