@@ -39,6 +39,7 @@
   --paper-size: 560px 560px, auto;
   --paper-blend: multiply, normal;
   --shadow-subtle: 0 12px 30px rgba(48, 78, 82, 0.12);
+  --topbar-height: 64px;
   color: var(--text);
   background: var(--bg);
 }
@@ -51,13 +52,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background:
-    linear-gradient(rgba(255, 250, 241, 0.48), rgba(255, 250, 241, 0.78)),
-    url("/app-background.webp"),
-    var(--bg);
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   -webkit-text-size-adjust: 100%;
@@ -85,16 +80,51 @@ textarea {
   isolation: isolate;
   min-height: 100vh;
   overflow-x: hidden;
+  padding-top: var(--topbar-height);
+}
+
+.app-shell::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(rgba(255, 250, 241, 0.4), rgba(255, 250, 241, 0.72)),
+    url("/app-background-tall.webp"),
+    var(--bg);
+  background-position:
+    center top,
+    center top,
+    center top;
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size:
+    auto,
+    max(1500px, 100vw) auto,
+    auto;
+  content: "";
+  pointer-events: none;
+  animation: app-background-scroll 110s ease-out forwards;
+}
+
+@keyframes app-background-scroll {
+  to {
+    background-position:
+      center top,
+      center bottom,
+      center top;
+  }
 }
 
 .topbar {
-  position: relative;
-  z-index: 1;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  min-height: 64px;
+  min-height: var(--topbar-height);
   padding: 18px clamp(16px, 4vw, 40px);
   border-bottom: 1px solid rgba(99, 132, 127, 0.24);
   background:
@@ -1174,14 +1204,16 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 }
 
 @media (max-width: 720px) {
-  body {
-    background:
-      linear-gradient(rgba(255, 250, 241, 0.44), rgba(255, 250, 241, 0.78)),
-      url("/app-background-mobile.webp"),
-      var(--bg);
-    background-position: center top;
-    background-repeat: no-repeat, repeat-y, repeat;
-    background-size: auto, max(540px, 100vw) auto, auto;
+  :root {
+    --topbar-height: 55px;
+  }
+
+  .app-shell::before {
+    background-size:
+      auto,
+      max(720px, 100vw) auto,
+      auto;
+    animation-duration: 95s;
   }
 
   .topbar {
@@ -1189,7 +1221,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    min-height: 0;
+    min-height: var(--topbar-height);
     padding: 8px 12px;
     background:
       var(--paper-fiber),
@@ -1458,6 +1490,12 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   .slot-response-list li,
   .slot-response-empty {
     padding: 8px 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell::before {
+    animation: none;
   }
 }
 
