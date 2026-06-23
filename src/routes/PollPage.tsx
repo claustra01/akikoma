@@ -91,7 +91,7 @@ export default function PollPage({ slug }: PollPageProps) {
 
       <section className="surface">
         <div className="section-heading">
-          <h2>集計</h2>
+          <h2>集計結果</h2>
         </div>
         <SummaryGrid
           config={payload.config}
