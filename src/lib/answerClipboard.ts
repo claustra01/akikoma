@@ -106,7 +106,7 @@ export function applyClipboardAnswers(
 ): ApplyClipboardAnswersResult {
   const normalizedText = normalizeClipboardText(text);
   if (normalizedText.trim() === "") {
-    return { ok: false, error: "貼り付ける表データが空です。" };
+    return { ok: false, error: "ペーストする表データが空です。" };
   }
 
   const rows = normalizedText.split("\n").map((row) => row.split("\t"));
@@ -141,7 +141,7 @@ export function applyClipboardAnswers(
       if (status === null) {
         return {
           ok: false,
-          error: `「${rawValue.trim()}」は読み取れません。○ / △ / × / 空欄だけ貼り付けできます。`
+          error: `「${rawValue.trim()}」は読み取れません。○ / △ / × / 空欄だけペーストできます。`
         };
       }
 

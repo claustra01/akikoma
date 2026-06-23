@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { applyClipboardAnswers, serializeAnswersToTsv } from "../lib/answerClipboard";
 import type { AnswersMap, PollConfig } from "../lib/schema";
 import ScheduleGrid from "./ScheduleGrid";
@@ -27,18 +28,18 @@ const EMPTY_VALUES: ResponseFormValues = {
 
 function pasteErrorMessage(error: unknown): string {
   if (!window.isSecureContext) {
-    return "HTTPSで開くと貼り付けできます";
+    return "HTTPSで開くとペーストできます";
   }
 
   if (!navigator.clipboard?.readText) {
-    return "このブラウザでは貼り付けできません";
+    return "このブラウザではペーストできません";
   }
 
   if (error instanceof DOMException && error.name === "NotAllowedError") {
-    return "ブラウザで貼り付けを許可してください";
+    return "ブラウザでペーストを許可してください";
   }
 
-  return "貼り付けできませんでした";
+  return "ペーストできませんでした";
 }
 
 export default function ResponseForm({
@@ -100,7 +101,7 @@ export default function ResponseForm({
       }
 
       setAnswers(result.value.answers);
-      showClipboardMessage("貼り付けました");
+      showClipboardMessage("ペーストしました");
     } catch (caught) {
       showClipboardMessage(pasteErrorMessage(caught));
     }
@@ -112,70 +113,74 @@ export default function ResponseForm({
   };
 
   return (
-    <form className="form-stack" onSubmit={handleSubmit}>
-      <div className="form-row">
-        <label htmlFor={`${idPrefix}-name`}>名前</label>
-        <input
-          id={`${idPrefix}-name`}
-          value={name}
-          onChange={(event) => setName(event.currentTarget.value)}
-          maxLength={50}
-          required
-          disabled={disabled || busy}
-        />
-      </div>
-
-      <div className="form-row">
-        <label htmlFor={`${idPrefix}-comment`}>コメント</label>
-        <textarea
-          id={`${idPrefix}-comment`}
-          value={comment}
-          onChange={(event) => setComment(event.currentTarget.value)}
-          maxLength={500}
-          rows={3}
-          disabled={disabled || busy}
-        />
-      </div>
-
-      <div className="schedule-tools">
-        <div className="actions schedule-tool-actions" role="group" aria-label="予定入力のコピーと貼り付け">
-          <button
-            className="button button-secondary"
-            type="button"
-            onClick={handleCopy}
+    <>
+      <form className="form-stack" onSubmit={handleSubmit}>
+        <div className="form-row">
+          <label htmlFor={`${idPrefix}-name`}>名前</label>
+          <input
+            id={`${idPrefix}-name`}
+            value={name}
+            onChange={(event) => setName(event.currentTarget.value)}
+            maxLength={50}
+            required
             disabled={disabled || busy}
-          >
-            コピー
-          </button>
-          <button
-            className="button button-secondary"
-            type="button"
-            onClick={handlePaste}
+          />
+        </div>
+
+        <div className="form-row">
+          <label htmlFor={`${idPrefix}-comment`}>コメント</label>
+          <textarea
+            id={`${idPrefix}-comment`}
+            value={comment}
+            onChange={(event) => setComment(event.currentTarget.value)}
+            maxLength={500}
+            rows={3}
             disabled={disabled || busy}
-          >
-            貼り付け
+          />
+        </div>
+
+        <div className="schedule-tools">
+          <div className="actions schedule-tool-actions" role="group" aria-label="予定入力のコピーとペースト">
+            <button
+              className="button button-secondary"
+              type="button"
+              onClick={handleCopy}
+              disabled={disabled || busy}
+            >
+              コピー
+            </button>
+            <button
+              className="button button-secondary"
+              type="button"
+              onClick={handlePaste}
+              disabled={disabled || busy}
+            >
+              ペースト
+            </button>
+          </div>
+        </div>
+
+        <ScheduleGrid
+          config={config}
+          answers={answers}
+          onChange={setAnswers}
+          disabled={disabled || busy}
+          idPrefix={`${idPrefix}-slot`}
+        />
+
+        <div className="actions">
+          <button className="button button-primary" type="submit" disabled={disabled || busy}>
+            {busy ? "送信中" : submitLabel}
           </button>
         </div>
-        {clipboardMessage && (
-          <p className="schedule-tool-message" role="status">
+      </form>
+      {clipboardMessage &&
+        createPortal(
+          <div className="schedule-tool-toast" role="status">
             {clipboardMessage}
-          </p>
+          </div>,
+          document.body
         )}
-      </div>
-
-      <ScheduleGrid
-        config={config}
-        answers={answers}
-        onChange={setAnswers}
-        disabled={disabled || busy}
-        idPrefix={`${idPrefix}-slot`}
-      />
-
-      <div className="actions">
-        <button className="button button-primary" type="submit" disabled={disabled || busy}>
-          {busy ? "送信中" : submitLabel}
-        </button>
-      </div>
-    </form>
+    </>
   );
 }
