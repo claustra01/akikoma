@@ -900,7 +900,7 @@ The public poll page should show:
 - Description
 - Summary counts per slot
 - Participant-level answers for a slot in a modal when a summary slot is clicked or tapped
-- A participant checkbox filter near the top of the summary page. All responses are selected by default; changing the selection immediately updates the summary, slot details, and response list. The filter is temporary and resets on page revisit.
+- A participant checkbox filter near the top of the summary page when responses exist. All responses are selected by default; changing the selection immediately updates the summary and slot details. The response list always shows every response. The filter is temporary and resets on page revisit.
 - Existing participant responses
 - Link to the response page when the poll is open
 ```

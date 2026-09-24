@@ -122,14 +122,16 @@ export default function PollPage({ slug }: PollPageProps) {
       {error && <p className="message message-error">{error}</p>}
 
       <section className="surface">
-        <ParticipantFilter
-          responses={payload.responses}
-          selectedIds={selectedResponseIds}
-          selectedCount={selectedResponses.length}
-          onToggle={toggleResponse}
-          onSelectAll={() => setSelectedResponseIds(null)}
-          onClear={() => setSelectedResponseIds(new Set())}
-        />
+        {payload.responses.length > 0 && (
+          <ParticipantFilter
+            responses={payload.responses}
+            selectedIds={selectedResponseIds}
+            selectedCount={selectedResponses.length}
+            onToggle={toggleResponse}
+            onSelectAll={() => setSelectedResponseIds(null)}
+            onClear={() => setSelectedResponseIds(new Set())}
+          />
+        )}
         <div className="section-heading">
           <h2>集計結果</h2>
         </div>
@@ -150,12 +152,7 @@ export default function PollPage({ slug }: PollPageProps) {
         <div className="section-heading section-heading-nested">
           <h2>回答一覧</h2>
         </div>
-        <ResponseList
-          slug={slug}
-          config={payload.config}
-          responses={selectedResponses}
-          emptyMessage={payload.responses.length > 0 ? "表示する参加者が選択されていません。" : undefined}
-        />
+        <ResponseList slug={slug} config={payload.config} responses={payload.responses} />
       </section>
 
       <SlotResponseModal

@@ -5,14 +5,13 @@ type ResponseListProps = {
   slug: string;
   config: PollConfig;
   responses: ResponseDto[];
-  emptyMessage?: string;
 };
 
-export default function ResponseList({ slug, config, responses, emptyMessage = "まだ回答はありません。" }: ResponseListProps) {
+export default function ResponseList({ slug, config, responses }: ResponseListProps) {
   const slotIds = getEnabledSlotIds(config);
 
   if (responses.length === 0) {
-    return <p className="muted">{emptyMessage}</p>;
+    return <p className="muted">まだ回答はありません。</p>;
   }
 
   return (

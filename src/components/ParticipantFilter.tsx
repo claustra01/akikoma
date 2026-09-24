@@ -17,15 +17,11 @@ export default function ParticipantFilter({
   onSelectAll,
   onClear
 }: ParticipantFilterProps) {
-  if (responses.length === 0) {
-    return null;
-  }
-
   return (
     <section className="participant-filter" aria-labelledby="participant-filter-title">
-      <div className="participant-filter-heading">
-        <h2 id="participant-filter-title">集計する参加者</h2>
-        <span className="participant-filter-count" aria-live="polite">
+      <div className="section-heading participant-filter-heading">
+        <h2 id="participant-filter-title">表示切り替え</h2>
+        <span className="muted participant-filter-count" aria-live="polite">
           {selectedCount} / {responses.length}人を表示
         </span>
       </div>
