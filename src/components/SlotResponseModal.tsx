@@ -7,6 +7,7 @@ type SlotResponseModalProps = {
   dayLabel: string;
   periodLabel: string;
   details: SlotResponseDetail[];
+  emptyMessage?: string;
   statusLabels: StatusLabels;
   onClose: () => void;
 };
@@ -25,6 +26,7 @@ export default function SlotResponseModal({
   dayLabel,
   periodLabel,
   details,
+  emptyMessage = "まだ回答はありません。",
   statusLabels,
   onClose
 }: SlotResponseModalProps) {
@@ -98,7 +100,7 @@ export default function SlotResponseModal({
 
         <div className="slot-response-modal-body">
           {details.length === 0 ? (
-            <p className="muted">まだ回答はありません。</p>
+            <p className="muted">{emptyMessage}</p>
           ) : (
             <div className="slot-response-groups">
               {STATUS_GROUPS.map((status) => {

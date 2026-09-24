@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
+import ParticipantFilter from "../components/ParticipantFilter";
 import ResponseList from "../components/ResponseList";
 import SlotResponseModal from "../components/SlotResponseModal";
 import SummaryGrid from "../components/SummaryGrid";
 import type { SummarySlotSelection } from "../components/SummaryGrid";
 import { ApiClientError, getPoll, type PollReadPayload } from "../lib/api";
 import { saveRecentPoll } from "../lib/recentPolls";
-import { getSlotResponseDetails } from "../lib/summary";
+import { getEnabledSlotIds } from "../lib/schema";
+import { computeSummary, getSlotResponseDetails } from "../lib/summary";
 
 type PollPageProps = {
   slug: string;
@@ -24,6 +26,7 @@ export default function PollPage({ slug }: PollPageProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedSlot, setSelectedSlot] = useState<SummarySlotSelection | null>(null);
+  const [selectedResponseIds, setSelectedResponseIds] = useState<Set<string> | null>(null);
 
   const loadPoll = useCallback(async () => {
     setLoading(true);
@@ -45,19 +48,48 @@ export default function PollPage({ slug }: PollPageProps) {
 
   useEffect(() => {
     setSelectedSlot(null);
+    setSelectedResponseIds(null);
   }, [slug]);
 
   const closeSlotModal = useCallback(() => {
     setSelectedSlot(null);
   }, []);
 
+  const selectedResponses = useMemo(() => {
+    if (!payload) {
+      return [];
+    }
+    return payload.responses.filter((response) => selectedResponseIds === null || selectedResponseIds.has(response.id));
+  }, [payload, selectedResponseIds]);
+
+  const filteredSummary = useMemo(() => {
+    if (!payload) {
+      return null;
+    }
+    return selectedResponseIds === null
+      ? payload.summary
+      : computeSummary(getEnabledSlotIds(payload.config), selectedResponses);
+  }, [payload, selectedResponseIds, selectedResponses]);
+
+  const toggleResponse = (id: string) => {
+    setSelectedResponseIds((current) => {
+      const next = new Set(current ?? payload?.responses.map((response) => response.id) ?? []);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
   const selectedSlotDetails = useMemo(() => {
     if (!payload || !selectedSlot) {
       return [];
     }
 
-    return getSlotResponseDetails(selectedSlot.slot.id, payload.responses);
-  }, [payload, selectedSlot]);
+    return getSlotResponseDetails(selectedSlot.slot.id, selectedResponses);
+  }, [payload, selectedSlot, selectedResponses]);
 
   if (loading && payload === null) {
     return <LoadingSpinner />;
@@ -90,12 +122,20 @@ export default function PollPage({ slug }: PollPageProps) {
       {error && <p className="message message-error">{error}</p>}
 
       <section className="surface">
+        <ParticipantFilter
+          responses={payload.responses}
+          selectedIds={selectedResponseIds}
+          selectedCount={selectedResponses.length}
+          onToggle={toggleResponse}
+          onSelectAll={() => setSelectedResponseIds(null)}
+          onClear={() => setSelectedResponseIds(new Set())}
+        />
         <div className="section-heading">
           <h2>集計結果</h2>
         </div>
         <SummaryGrid
           config={payload.config}
-          summary={payload.summary}
+          summary={filteredSummary ?? payload.summary}
           selectedSlotId={selectedSlot?.slot.id ?? null}
           onSlotSelect={setSelectedSlot}
         />
@@ -110,7 +150,12 @@ export default function PollPage({ slug }: PollPageProps) {
         <div className="section-heading section-heading-nested">
           <h2>回答一覧</h2>
         </div>
-        <ResponseList slug={slug} config={payload.config} responses={payload.responses} />
+        <ResponseList
+          slug={slug}
+          config={payload.config}
+          responses={selectedResponses}
+          emptyMessage={payload.responses.length > 0 ? "表示する参加者が選択されていません。" : undefined}
+        />
       </section>
 
       <SlotResponseModal
@@ -118,6 +163,7 @@ export default function PollPage({ slug }: PollPageProps) {
         dayLabel={selectedSlot?.dayLabel ?? ""}
         periodLabel={selectedSlot?.periodLabel ?? ""}
         details={selectedSlotDetails}
+        emptyMessage={payload.responses.length > 0 ? "表示する参加者が選択されていません。" : undefined}
         statusLabels={payload.config.statusLabels}
         onClose={closeSlotModal}
       />

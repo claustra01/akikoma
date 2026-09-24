@@ -10,6 +10,25 @@ import {
 const slots = ["d0p0", "d0p1", "d1p0"];
 
 describe("computeSummary", () => {
+  it("recomputes counts and slot details for selected participants", () => {
+    const responses = [
+      { id: "r1", name: "佐藤", answers: { d0p0: "yes", d0p1: "no" } },
+      { id: "r2", name: "鈴木", answers: { d0p0: "no", d0p1: "yes" } },
+      { id: "r3", name: "田中", answers: { d0p0: "yes", d0p1: "yes" } }
+    ];
+    const selected = responses.filter((response) => new Set(["r1", "r3"]).has(response.id));
+    const summary = computeSummary(slots, selected);
+
+    expect(summary.d0p0).toEqual({ yes: 2, maybe: 0, no: 0, unanswered: 0 });
+    expect(summary.d0p1).toEqual({ yes: 1, maybe: 0, no: 1, unanswered: 0 });
+    expect(getAvailabilityHighlight(summary.d0p0, getRankedScores(summary))).toBe("best");
+    expect(getSlotResponseDetails("d0p0", selected).map((detail) => detail.name)).toEqual(["佐藤", "田中"]);
+
+    const emptySummary = computeSummary(slots, []);
+    expect(emptySummary.d0p0).toEqual({ yes: 0, maybe: 0, no: 0, unanswered: 0 });
+    expect(getRankedScores(emptySummary)).toEqual({ best: 0, second: 0 });
+  });
+
   it("counts yes maybe and no correctly", () => {
     const summary = computeSummary(slots, [
       { answers: { d0p0: "yes", d0p1: "maybe", d1p0: "no" } },
