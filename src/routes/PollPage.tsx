@@ -122,32 +122,34 @@ export default function PollPage({ slug }: PollPageProps) {
       {error && <p className="message message-error">{error}</p>}
 
       <section className="surface">
-        {payload.responses.length > 0 && (
-          <ParticipantFilter
-            responses={payload.responses}
-            selectedIds={selectedResponseIds}
-            selectedCount={selectedResponses.length}
-            onToggle={toggleResponse}
-            onSelectAll={() => setSelectedResponseIds(null)}
-            onClear={() => setSelectedResponseIds(new Set())}
-          />
-        )}
-        <div className="section-heading">
-          <h2>集計結果</h2>
-        </div>
-        <SummaryGrid
-          config={payload.config}
-          summary={filteredSummary ?? payload.summary}
-          selectedSlotId={selectedSlot?.slot.id ?? null}
-          onSlotSelect={setSelectedSlot}
-        />
-        {!payload.poll.isClosed && (
-          <div className="actions summary-actions">
-            <a className="button button-primary" href={`/p/${slug}/poll`}>
-              回答する
-            </a>
+        <section aria-labelledby="summary-title">
+          <div className="section-heading">
+            <h2 id="summary-title">集計結果</h2>
           </div>
-        )}
+          {payload.responses.length > 0 && (
+            <ParticipantFilter
+              responses={payload.responses}
+              selectedIds={selectedResponseIds}
+              selectedCount={selectedResponses.length}
+              onToggle={toggleResponse}
+              onSelectAll={() => setSelectedResponseIds(null)}
+              onClear={() => setSelectedResponseIds(new Set())}
+            />
+          )}
+          <SummaryGrid
+            config={payload.config}
+            summary={filteredSummary ?? payload.summary}
+            selectedSlotId={selectedSlot?.slot.id ?? null}
+            onSlotSelect={setSelectedSlot}
+          />
+          {!payload.poll.isClosed && (
+            <div className="actions summary-actions">
+              <a className="button button-primary" href={`/p/${slug}/poll`}>
+                回答する
+              </a>
+            </div>
+          )}
+        </section>
 
         <div className="section-heading section-heading-nested">
           <h2>回答一覧</h2>

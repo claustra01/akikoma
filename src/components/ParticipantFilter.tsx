@@ -19,13 +19,6 @@ export default function ParticipantFilter({
 }: ParticipantFilterProps) {
   return (
     <section className="participant-filter" aria-labelledby="participant-filter-title">
-      <div className="section-heading participant-filter-heading">
-        <h2 id="participant-filter-title">表示切り替え</h2>
-        <span className="muted participant-filter-count" aria-live="polite">
-          {selectedCount} / {responses.length}人を表示
-        </span>
-      </div>
-
       <div className="participant-filter-actions actions">
         <button className="button button-secondary" type="button" onClick={onSelectAll} disabled={selectedCount === responses.length}>
           全員を選択
