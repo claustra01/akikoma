@@ -117,9 +117,11 @@ export default function EditResponsePage({ slug, responseId }: EditResponsePageP
     return (
       <section className="page-section">
         <p className="message message-error">指定された回答は見つかりません。</p>
-        <a className="button button-secondary" href={`/p/${slug}`}>
-          戻る
-        </a>
+        <div className="actions">
+          <a className="button button-secondary" href={`/p/${slug}`}>
+            戻る
+          </a>
+        </div>
       </section>
     );
   }
@@ -131,7 +133,7 @@ export default function EditResponsePage({ slug, responseId }: EditResponsePageP
           <h1>{payload.poll.title}</h1>
         </div>
         <span className={`state-badge ${payload.poll.isClosed ? "state-closed" : "state-open"}`}>
-          {payload.poll.isClosed ? "締め切り済み" : "受付中"}
+          {payload.poll.isClosed ? "締切済み" : "受付中"}
         </span>
       </div>
 

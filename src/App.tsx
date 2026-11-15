@@ -96,11 +96,15 @@ export default function App() {
         {route.name === "edit" && <EditResponsePage slug={route.slug} responseId={route.responseId} />}
         {route.name === "notFound" && (
           <section className="page-section">
-            <h1>ページが見つかりません</h1>
-            <p>URL を確認してください。</p>
-            <a className="button button-primary" href="/">
-              ホームへ
-            </a>
+            <div className="section-heading">
+              <h1>ページが見つかりません</h1>
+              <p>URL を確認してください。</p>
+            </div>
+            <div className="actions">
+              <a className="button button-primary" href="/">
+                ホームへ
+              </a>
+            </div>
           </section>
         )}
       </main>

@@ -18,7 +18,7 @@ export default function ParticipantFilter({
   onClear
 }: ParticipantFilterProps) {
   return (
-    <section className="participant-filter" aria-labelledby="participant-filter-title">
+    <section className="participant-filter" aria-label="集計する参加者">
       <div className="participant-filter-actions actions">
         <button className="button button-secondary" type="button" onClick={onSelectAll} disabled={selectedCount === responses.length}>
           全員を選択

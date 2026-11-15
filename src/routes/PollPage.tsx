@@ -122,7 +122,7 @@ export default function PollPage({ slug }: PollPageProps) {
       {error && <p className="message message-error">{error}</p>}
 
       <section className="surface">
-        <section aria-labelledby="summary-title">
+        <section className="stack" aria-labelledby="summary-title">
           <div className="section-heading">
             <h2 id="summary-title">集計結果</h2>
           </div>
@@ -143,7 +143,7 @@ export default function PollPage({ slug }: PollPageProps) {
             onSlotSelect={setSelectedSlot}
           />
           {!payload.poll.isClosed && (
-            <div className="actions summary-actions">
+            <div className="actions">
               <a className="button button-primary" href={`/p/${slug}/poll`}>
                 回答する
               </a>
@@ -151,10 +151,12 @@ export default function PollPage({ slug }: PollPageProps) {
           )}
         </section>
 
-        <div className="section-heading section-heading-nested">
-          <h2>回答一覧</h2>
-        </div>
-        <ResponseList slug={slug} config={payload.config} responses={payload.responses} />
+        <section className="stack" aria-labelledby="responses-title">
+          <div className="section-heading">
+            <h2 id="responses-title">回答一覧</h2>
+          </div>
+          <ResponseList slug={slug} config={payload.config} responses={payload.responses} />
+        </section>
       </section>
 
       <SlotResponseModal
