@@ -597,6 +597,8 @@ Response `200`:
 
 Do not include admin token or token hashes in this response.
 
+`updatedAt` values are D1 `CURRENT_TIMESTAMP` text (`YYYY-MM-DD HH:MM:SS`) in UTC. The API returns them unchanged; the frontend converts them to the poll timezone (`config.timezone`) for display.
+
 ### 14.3 Create Response
 
 ```text

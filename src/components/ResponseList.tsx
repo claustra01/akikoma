@@ -1,4 +1,5 @@
 import { getEnabledSlotIds, UNANSWERED_LABEL, type PollConfig, type ResponseDto } from "../lib/schema";
+import { formatTimestamp } from "../lib/display";
 import { countAnswers } from "../lib/summary";
 
 type ResponseListProps = {
@@ -42,7 +43,7 @@ export default function ResponseList({ slug, config, responses }: ResponseListPr
                       <span>{UNANSWERED_LABEL} {counts.unanswered}</span>
                     </span>
                   </td>
-                  <td>{response.updatedAt ?? ""}</td>
+                  <td>{response.updatedAt ? formatTimestamp(response.updatedAt, config.timezone) : ""}</td>
                   <td>
                     <a className="table-action" href={`/p/${slug}/edit/${response.id}`}>
                       編集
@@ -73,7 +74,9 @@ export default function ResponseList({ slug, config, responses }: ResponseListPr
                 <span>{config.statusLabels.no} {counts.no}</span>
                 <span>{UNANSWERED_LABEL} {counts.unanswered}</span>
               </div>
-              {response.updatedAt && <div className="response-card-date">{response.updatedAt}</div>}
+              {response.updatedAt && (
+                <div className="response-card-date">{formatTimestamp(response.updatedAt, config.timezone)}</div>
+              )}
             </article>
           );
         })}

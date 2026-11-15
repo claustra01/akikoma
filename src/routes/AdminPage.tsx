@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { navigate } from "../App";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { ApiClientError, closePoll, deletePoll, getPoll, type PollReadPayload } from "../lib/api";
+import { formatTimestamp } from "../lib/display";
 import { removeRecentPoll, saveRecentPoll } from "../lib/recentPolls";
 
 type AdminPageProps = {
@@ -180,7 +181,7 @@ export default function AdminPage({ slug, token }: AdminPageProps) {
             )}
             <div>
               <dt>最終更新</dt>
-              <dd>{payload.poll.updatedAt ?? ""}</dd>
+              <dd>{payload.poll.updatedAt ? formatTimestamp(payload.poll.updatedAt, payload.config.timezone) : ""}</dd>
             </div>
           </dl>
 

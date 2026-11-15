@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
+import { createPortal } from "react-dom";
 import { UNANSWERED_LABEL, type StatusLabels } from "../lib/schema";
 import type { SlotResponseDetail, SlotResponseStatus } from "../lib/summary";
 
@@ -52,6 +53,7 @@ export default function SlotResponseModal({
     }
 
     const previousOverflow = document.body.style.overflow;
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus(), 0);
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -66,6 +68,8 @@ export default function SlotResponseModal({
       window.clearTimeout(focusTimer);
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
+      // Return focus to the summary cell that opened the dialog.
+      previouslyFocused?.focus();
     };
   }, [isOpen, onClose]);
 
@@ -73,7 +77,8 @@ export default function SlotResponseModal({
     return null;
   }
 
-  return (
+  // Render at <body> level so the backdrop covers the fixed top bar too.
+  return createPortal(
     <div
       className="modal-backdrop"
       onClick={(event) => {
@@ -132,6 +137,7 @@ export default function SlotResponseModal({
           )}
         </div>
       </section>
-    </div>
+    </div>,
+    document.body
   );
 }
