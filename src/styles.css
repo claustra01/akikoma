@@ -1086,10 +1086,11 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
   max-height: min(82vh, 720px);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: var(--surface-bg);
+  /* --panel at 90% opacity: barely see-through, still easy to read. */
+  background: rgba(255, 253, 246, 0.9);
   box-shadow: var(--shadow-overlay);
-  -webkit-backdrop-filter: blur(3px) saturate(1.01);
-  backdrop-filter: blur(3px) saturate(1.01);
+  -webkit-backdrop-filter: blur(12px) saturate(1.01);
+  backdrop-filter: blur(12px) saturate(1.01);
   overflow: hidden;
 }
 
@@ -1523,6 +1524,143 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 @media (max-width: 340px) {
   .participant-filter-list {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Tactile feel ---------- */
+/*
+ * Motion only: nothing here changes colour, size, spacing or layout at rest.
+ * Controls squish quickly on press (--ease-press) and spring back with a
+ * small overshoot on release (--ease-spring). Uses the individual `scale`
+ * property so it composes with existing `transform` hover offsets.
+ */
+:root {
+  --ease-press: cubic-bezier(0.3, 0, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --press-duration: 90ms;
+  --release-duration: 520ms;
+}
+
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --ease-spring: linear(
+      0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017,
+      1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%,
+      1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%,
+      0.997 69.8%, 1.003 76.9%, 1
+    );
+  }
+}
+
+button,
+a,
+label,
+.button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Release: spring back. */
+  .button {
+    transition:
+      box-shadow 140ms ease,
+      transform 140ms ease,
+      background-color 140ms ease,
+      scale var(--release-duration) var(--ease-spring);
+  }
+
+  .status-button,
+  .bulk-status-button,
+  .recent-remove-button,
+  .modal-close-button,
+  .topnav a,
+  .participant-filter-option input {
+    transition:
+      border-color 140ms ease,
+      background-color 140ms ease,
+      box-shadow 140ms ease,
+      scale var(--release-duration) var(--ease-spring);
+  }
+
+  .recent-item {
+    transition:
+      border-color 140ms ease,
+      scale var(--release-duration) var(--ease-spring);
+  }
+
+  /* Press: squish quickly, slightly flatter than wide. */
+  .button:active:not(:disabled),
+  .status-button:active:not(:disabled),
+  .bulk-status-button:active:not(:disabled),
+  .recent-remove-button:active,
+  .modal-close-button:active,
+  .topnav a:active,
+  .participant-filter-option:active input {
+    transition-duration: 140ms, 140ms, 140ms, var(--press-duration);
+    transition-timing-function: ease, ease, ease, var(--ease-press);
+  }
+
+  .recent-item:has(.recent-item-main:active) {
+    transition-duration: 140ms, var(--press-duration);
+    transition-timing-function: ease, var(--ease-press);
+    scale: 0.985;
+  }
+
+  .button:active:not(:disabled) {
+    scale: 0.97 0.92;
+  }
+
+  .status-button:active:not(:disabled),
+  .bulk-status-button:active:not(:disabled) {
+    scale: 0.9 0.84;
+  }
+
+  .recent-remove-button:active,
+  .modal-close-button:active,
+  .topnav a:active {
+    scale: 0.86;
+  }
+
+  .participant-filter-option:active input {
+    scale: 0.8;
+  }
+
+  /* Selecting an answer gives it a small jelly wobble. */
+  .status-button.is-selected,
+  .participant-filter-option input:checked {
+    animation: puni-pop 460ms ease-out;
+  }
+
+  @keyframes puni-pop {
+    0% {
+      transform: scale(1, 1);
+    }
+
+    28% {
+      transform: scale(1.1, 0.9);
+    }
+
+    48% {
+      transform: scale(0.95, 1.05);
+    }
+
+    68% {
+      transform: scale(1.03, 0.98);
+    }
+
+    84% {
+      transform: scale(0.99, 1.01);
+    }
+
+    100% {
+      transform: scale(1, 1);
+    }
+  }
+
+  /* Dialog fades in without moving, so the screen never appears to shake. */
+  .modal-backdrop {
+    animation: toast-overlay-fade-in 160ms ease-out;
   }
 }
 
