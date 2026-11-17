@@ -59,116 +59,119 @@ export default function NewPollPage() {
       </div>
 
       <form className="surface form-stack" onSubmit={handleSubmit}>
-        <div className="form-row">
-          <label htmlFor="poll-title">タイトル</label>
-          <input
-            id="poll-title"
-            value={title}
-            onChange={(event) => setTitle(event.currentTarget.value)}
-            maxLength={100}
-            required
-            disabled={busy}
-          />
-        </div>
-
-        <div className="form-grid">
+        <div className="group">
           <div className="form-row">
-            <label htmlFor="poll-start-date">開始日</label>
+            <label htmlFor="poll-title">タイトル</label>
             <input
-              id="poll-start-date"
-              type="date"
-              value={startDate}
-              onChange={(event) => {
-                const nextStartDate = event.currentTarget.value;
-                setStartDate(nextStartDate);
-                if (!nextStartDate) {
-                  return;
-                }
-                const nextMaxEndDate = addDaysToIsoDate(nextStartDate, 13);
-                if (endDate < nextStartDate) {
-                  setEndDate(nextStartDate);
-                } else if (endDate > nextMaxEndDate) {
-                  setEndDate(nextMaxEndDate);
-                }
-              }}
+              id="poll-title"
+              value={title}
+              onChange={(event) => setTitle(event.currentTarget.value)}
+              maxLength={100}
               required
               disabled={busy}
             />
           </div>
 
+          <div className="form-grid">
+            <div className="form-row">
+              <label htmlFor="poll-start-date">開始日</label>
+              <input
+                id="poll-start-date"
+                type="date"
+                value={startDate}
+                onChange={(event) => {
+                  const nextStartDate = event.currentTarget.value;
+                  setStartDate(nextStartDate);
+                  if (!nextStartDate) {
+                    return;
+                  }
+                  const nextMaxEndDate = addDaysToIsoDate(nextStartDate, 13);
+                  if (endDate < nextStartDate) {
+                    setEndDate(nextStartDate);
+                  } else if (endDate > nextMaxEndDate) {
+                    setEndDate(nextMaxEndDate);
+                  }
+                }}
+                required
+                disabled={busy}
+              />
+            </div>
+
+            <div className="form-row">
+              <label htmlFor="poll-end-date">終了日</label>
+              <input
+                id="poll-end-date"
+                type="date"
+                value={endDate}
+                min={startDate}
+                max={maxEndDate}
+                onChange={(event) => setEndDate(event.currentTarget.value)}
+                required
+                disabled={busy}
+              />
+            </div>
+          </div>
+
+          <div className="form-grid">
+            <div className="form-row">
+              <label htmlFor="poll-start-period">開始時限</label>
+              <select
+                id="poll-start-period"
+                value={startPeriod}
+                onChange={(event) => {
+                  const nextStartPeriod = Number(event.currentTarget.value);
+                  setStartPeriod(nextStartPeriod);
+                  if (endPeriod < nextStartPeriod) {
+                    setEndPeriod(nextStartPeriod);
+                  }
+                }}
+                disabled={busy}
+              >
+                {periodOptions.map((period) => (
+                  <option key={period} value={period}>
+                    {formatPeriodLabel(period)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-row">
+              <label htmlFor="poll-end-period">終了時限</label>
+              <select
+                id="poll-end-period"
+                value={endPeriod}
+                onChange={(event) => setEndPeriod(Number(event.currentTarget.value))}
+                disabled={busy}
+              >
+                {periodOptions.map((period) => (
+                  <option key={period} value={period} disabled={period < startPeriod}>
+                    {formatPeriodLabel(period)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <div className="form-row">
-            <label htmlFor="poll-end-date">終了日</label>
-            <input
-              id="poll-end-date"
-              type="date"
-              value={endDate}
-              min={startDate}
-              max={maxEndDate}
-              onChange={(event) => setEndDate(event.currentTarget.value)}
-              required
+            <label htmlFor="poll-description">説明</label>
+            <textarea
+              id="poll-description"
+              value={description}
+              onChange={(event) => setDescription(event.currentTarget.value)}
+              maxLength={1000}
+              rows={5}
               disabled={busy}
             />
           </div>
         </div>
 
-        <div className="form-grid">
-          <div className="form-row">
-            <label htmlFor="poll-start-period">開始時限</label>
-            <select
-              id="poll-start-period"
-              value={startPeriod}
-              onChange={(event) => {
-                const nextStartPeriod = Number(event.currentTarget.value);
-                setStartPeriod(nextStartPeriod);
-                if (endPeriod < nextStartPeriod) {
-                  setEndPeriod(nextStartPeriod);
-                }
-              }}
-              disabled={busy}
-            >
-              {periodOptions.map((period) => (
-                <option key={period} value={period}>
-                  {formatPeriodLabel(period)}
-                </option>
-              ))}
-            </select>
+        <div className="group">
+          {error && <p className="message message-error">{error}</p>}
+          <div className="actions">
+            <button className="button button-primary" type="submit" disabled={busy}>
+              {busy ? "作成中..." : "作成する"}
+            </button>
           </div>
-
-          <div className="form-row">
-            <label htmlFor="poll-end-period">終了時限</label>
-            <select
-              id="poll-end-period"
-              value={endPeriod}
-              onChange={(event) => setEndPeriod(Number(event.currentTarget.value))}
-              disabled={busy}
-            >
-              {periodOptions.map((period) => (
-                <option key={period} value={period} disabled={period < startPeriod}>
-                  {formatPeriodLabel(period)}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="form-row">
-          <label htmlFor="poll-description">説明</label>
-          <textarea
-            id="poll-description"
-            value={description}
-            onChange={(event) => setDescription(event.currentTarget.value)}
-            maxLength={1000}
-            rows={5}
-            disabled={busy}
-          />
-        </div>
-
-        {error && <p className="message message-error">{error}</p>}
-
-        <div className="actions">
-          <button className="button button-primary" type="submit" disabled={busy}>
-            {busy ? "作成中..." : "作成する"}
-          </button>
         </div>
       </form>
 

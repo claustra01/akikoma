@@ -30,10 +30,12 @@ export default function HomePage() {
     <section className="page-section home-page">
       <div className="home-dashboard">
         <section className="home-create-panel">
-          <h1>
-            <img className="home-logo" src="/title-logo.png" alt="みんなの空きコマ" width="1100" height="176" />
-          </h1>
-          <p>みんなの空きコマを自動で集計！</p>
+          <div className="home-intro">
+            <h1>
+              <img className="home-logo" src="/title-logo.png" alt="みんなの空きコマ" width="1100" height="176" />
+            </h1>
+            <p>みんなの空きコマを自動で集計！</p>
+          </div>
           <div className="actions">
             <a className="button button-primary" href="/new">
               新規作成

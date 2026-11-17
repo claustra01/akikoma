@@ -115,58 +115,62 @@ export default function ResponseForm({
   return (
     <>
       <form className="form-stack" onSubmit={handleSubmit}>
-        <div className="form-row">
-          <label htmlFor={`${idPrefix}-name`}>名前</label>
-          <input
-            id={`${idPrefix}-name`}
-            value={name}
-            onChange={(event) => setName(event.currentTarget.value)}
-            maxLength={50}
-            required
-            disabled={disabled || busy}
-          />
-        </div>
-
-        <div className="form-row">
-          <label htmlFor={`${idPrefix}-comment`}>コメント</label>
-          <textarea
-            id={`${idPrefix}-comment`}
-            value={comment}
-            onChange={(event) => setComment(event.currentTarget.value)}
-            maxLength={500}
-            rows={3}
-            disabled={disabled || busy}
-          />
-        </div>
-
-        <div className="schedule-tools">
-          <div className="actions schedule-tool-actions" role="group" aria-label="予定入力のコピーとペースト">
-            <button
-              className="button button-secondary"
-              type="button"
-              onClick={handleCopy}
+        <div className="group">
+          <div className="form-row">
+            <label htmlFor={`${idPrefix}-name`}>名前</label>
+            <input
+              id={`${idPrefix}-name`}
+              value={name}
+              onChange={(event) => setName(event.currentTarget.value)}
+              maxLength={50}
+              required
               disabled={disabled || busy}
-            >
-              コピー
-            </button>
-            <button
-              className="button button-secondary"
-              type="button"
-              onClick={handlePaste}
+            />
+          </div>
+
+          <div className="form-row">
+            <label htmlFor={`${idPrefix}-comment`}>コメント</label>
+            <textarea
+              id={`${idPrefix}-comment`}
+              value={comment}
+              onChange={(event) => setComment(event.currentTarget.value)}
+              maxLength={500}
+              rows={3}
               disabled={disabled || busy}
-            >
-              ペースト
-            </button>
+            />
           </div>
         </div>
 
-        <ScheduleGrid
-          config={config}
-          answers={answers}
-          onChange={setAnswers}
-          disabled={disabled || busy}
-          idPrefix={`${idPrefix}-slot`}
-        />
+        <div className="group">
+          <div className="schedule-tools">
+            <div className="actions schedule-tool-actions" role="group" aria-label="予定入力のコピーとペースト">
+              <button
+                className="button button-secondary"
+                type="button"
+                onClick={handleCopy}
+                disabled={disabled || busy}
+              >
+                コピー
+              </button>
+              <button
+                className="button button-secondary"
+                type="button"
+                onClick={handlePaste}
+                disabled={disabled || busy}
+              >
+                ペースト
+              </button>
+            </div>
+          </div>
+
+          <ScheduleGrid
+            config={config}
+            answers={answers}
+            onChange={setAnswers}
+            disabled={disabled || busy}
+            idPrefix={`${idPrefix}-slot`}
+          />
+        </div>
 
         <div className="actions">
           <button className="button button-primary" type="submit" disabled={disabled || busy}>

@@ -126,29 +126,33 @@ export default function PollPage({ slug }: PollPageProps) {
           <div className="section-heading">
             <h2 id="summary-title">集計結果</h2>
           </div>
-          {payload.responses.length > 0 && (
-            <ParticipantFilter
-              responses={payload.responses}
-              selectedIds={selectedResponseIds}
-              selectedCount={selectedResponses.length}
-              onToggle={toggleResponse}
-              onSelectAll={() => setSelectedResponseIds(null)}
-              onClear={() => setSelectedResponseIds(new Set())}
-            />
-          )}
-          <SummaryGrid
-            config={payload.config}
-            summary={filteredSummary ?? payload.summary}
-            selectedSlotId={selectedSlot?.slot.id ?? null}
-            onSlotSelect={setSelectedSlot}
-          />
-          {!payload.poll.isClosed && (
-            <div className="actions">
-              <a className="button button-primary" href={`/p/${slug}/poll`}>
-                回答する
-              </a>
+          <div className="group-stack">
+            <div className="group">
+              {payload.responses.length > 0 && (
+                <ParticipantFilter
+                  responses={payload.responses}
+                  selectedIds={selectedResponseIds}
+                  selectedCount={selectedResponses.length}
+                  onToggle={toggleResponse}
+                  onSelectAll={() => setSelectedResponseIds(null)}
+                  onClear={() => setSelectedResponseIds(new Set())}
+                />
+              )}
+              <SummaryGrid
+                config={payload.config}
+                summary={filteredSummary ?? payload.summary}
+                selectedSlotId={selectedSlot?.slot.id ?? null}
+                onSlotSelect={setSelectedSlot}
+              />
             </div>
-          )}
+            {!payload.poll.isClosed && (
+              <div className="actions">
+                <a className="button button-primary" href={`/p/${slug}/poll`}>
+                  回答する
+                </a>
+              </div>
+            )}
+          </div>
         </section>
 
         <section className="stack" aria-labelledby="responses-title">
